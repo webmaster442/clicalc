@@ -7,7 +7,7 @@ using CliCalc;
 var mediator = new Mediator();
 var hashMarkCommands = HashmarkCommandLoader.GetCommands();
 var engine = new Engine(mediator);
-var presenter = new ResultPresenter(AnsiConsole.Console);
+var presenter = new ResultPresenter(mediator, AnsiConsole.Console);
 
 await using var prompt = new Prompt(
             callbacks: new EnginePromptCallbacks(hashMarkCommands),
@@ -36,10 +36,14 @@ while (true)
 
 async Task ExecuteHashMark(string text)
 {
-    if (hashMarkCommands.ContainsKey(text))
-        await hashMarkCommands[text].ExecuteAsync(AnsiConsole.Console, mediator, default);
+    var args = new Arguments(text);
+
+    if (hashMarkCommands.ContainsKey(args.CommandName))
+        await hashMarkCommands[args.CommandName].ExecuteAsync(args, AnsiConsole.Console, mediator, default);
     else
         AnsiConsole.MarkupLine($"[red bold]Unknown command: {text}[/]");
+
+    prompt
 }
 
 FormattedString? GetPrompt()

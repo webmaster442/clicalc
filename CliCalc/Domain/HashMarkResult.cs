@@ -7,13 +7,17 @@ internal class HashMarkResult
     public override string ToString()
         => Content;
 
-    public HashMarkResult(string content)
+    public bool Success { get; }
+
+    public HashMarkResult(bool success, string content)
     {
+        Success = success;
         Content = content;
     }
 
     public HashMarkResult() 
     {
+        Success = true;
         Content = string.Empty;
     }
 }

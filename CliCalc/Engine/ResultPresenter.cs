@@ -15,7 +15,7 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
 
     public CultureInfo Culture { get; set; }
 
-    public ResultPresenter(IAnsiConsole console)
+    public ResultPresenter(Mediator mediator, IAnsiConsole console)
     {
         _formatters =[
             new NumberFormatter(),
@@ -24,6 +24,7 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
         ];
         Culture = CultureInfo.CurrentUICulture;
         _console = console;
+        mediator.Register(this);
     }
 
     public void Display(Result result)

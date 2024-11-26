@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliCalc", "CliCalc\CliCalc.csproj", "{6C3A7AD5-B8B9-433A-B77C-8969385D53DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliCalc.Functions", "CliCalc.Functions\CliCalc.Functions.csproj", "{291B1839-8D59-493E-8CE2-4B3378F08AC9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C3A7AD5-B8B9-433A-B77C-8969385D53DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C3A7AD5-B8B9-433A-B77C-8969385D53DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C3A7AD5-B8B9-433A-B77C-8969385D53DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C3A7AD5-B8B9-433A-B77C-8969385D53DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{291B1839-8D59-493E-8CE2-4B3378F08AC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{291B1839-8D59-493E-8CE2-4B3378F08AC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{291B1839-8D59-493E-8CE2-4B3378F08AC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{291B1839-8D59-493E-8CE2-4B3378F08AC9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

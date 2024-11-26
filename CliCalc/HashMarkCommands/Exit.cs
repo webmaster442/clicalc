@@ -1,4 +1,5 @@
-﻿using CliCalc.Interfaces;
+﻿using CliCalc.Domain;
+using CliCalc.Interfaces;
 
 using Spectre.Console;
 
@@ -10,9 +11,9 @@ internal sealed class Exit : IHashMarkCommand
 
     public string Description => "Exits the application";
 
-    public Task<object> ExecuteAsync(IAnsiConsole ansiConsole, IAPI api, CancellationToken cancellationToken)
+    public Task<HashMarkResult> ExecuteAsync(IAnsiConsole ansiConsole, IMediator mediator, CancellationToken cancellationToken)
     {
-        api.Exit();
-        return Task.FromResult(new object());
+        mediator.Notify(new MessageTypes.ExitMessage());
+        return Task.FromResult(new HashMarkResult());
     }
 }

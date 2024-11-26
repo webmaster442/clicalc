@@ -7,7 +7,9 @@ using Microsoft.CodeAnalysis.Scripting;
 
 namespace CliCalc.Engine;
 
-internal sealed class Engine : INotifyable<MessageType.ResetMessage>
+internal sealed class Engine : 
+    INotifyable<MessageTypes.ResetMessage>,
+    INotifyable<MessageTypes.ExitMessage>
 {
     private readonly Global _globalScope;
     private readonly ScriptOptions _scriptOptions;
@@ -35,7 +37,7 @@ internal sealed class Engine : INotifyable<MessageType.ResetMessage>
             }
             else
             {
-                await _scriptState.ContinueWithAsync(input, cancellationToken: cancellationToken);
+                _scriptState = await _scriptState.ContinueWithAsync(input, cancellationToken: cancellationToken);
                 return Result.Success(_scriptState.ReturnValue);
             }
         }
@@ -45,8 +47,18 @@ internal sealed class Engine : INotifyable<MessageType.ResetMessage>
         }
     }
 
-    public void OnNotify(MessageType.ResetMessage message)
+    public void Reset()
     {
         _scriptState = null;
+        _globalScope.Mode = Global.AngleMode.Deg;
     }
+
+    public Global.AngleMode AngleMode
+        => _globalScope.Mode;
+
+    void INotifyable<MessageTypes.ResetMessage>.OnNotify(MessageTypes.ResetMessage message)
+        => Reset();
+
+    void INotifyable<MessageTypes.ExitMessage>.OnNotify(MessageTypes.ExitMessage message)
+        => Environment.Exit(0);
 }

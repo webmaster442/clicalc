@@ -5,14 +5,14 @@ using Spectre.Console;
 using CliCalc;
 
 var mediator = new Mediator();
-var HashMarkCommands = HashmarkCommandLoader.GetCommands();
+var hashMarkCommands = HashmarkCommandLoader.GetCommands();
 var engine = new Engine(mediator);
-var api = new API(mediator);
+var presenter = new ResultPresenter(AnsiConsole.Console);
 
 await using var prompt = new Prompt(
-            callbacks: new EnginePromptCallbacks(HashMarkCommands),
+            callbacks: new EnginePromptCallbacks(hashMarkCommands),
             configuration: new PromptConfiguration(
-                prompt: new FormattedString(">>> ", new FormatSpan(0, 1, AnsiColor.Red), new FormatSpan(1, 1, AnsiColor.Yellow), new FormatSpan(2, 1, AnsiColor.Green)),
+                prompt: GetPrompt(),
                 completionItemDescriptionPaneBackground: AnsiColor.Rgb(30, 30, 30),
                 selectedCompletionItemBackground: AnsiColor.Rgb(30, 30, 30),
                 selectedTextBackground: AnsiColor.Rgb(20, 61, 102)));
@@ -29,18 +29,23 @@ while (true)
         else
         {
             var result = await engine.Evaluate(response.Text, default);
-            result.Handle(result =>
-            {
-                AnsiConsole.MarkupLine($"[bold green]{result}[/]");
-            }, error =>
-            {
-                AnsiConsole.MarkupLine($"[bold red]{error.Message.EscapeMarkup()}[/]");
-            });
+            presenter.Display(result);
         }
     }
 }
 
 async Task ExecuteHashMark(string text)
 {
-    await HashMarkCommands[text].ExecuteAsync(AnsiConsole.Console, api, default);
+    if (hashMarkCommands.ContainsKey(text))
+        await hashMarkCommands[text].ExecuteAsync(AnsiConsole.Console, mediator, default);
+    else
+        AnsiConsole.MarkupLine($"[red bold]Unknown command: {text}[/]");
+}
+
+FormattedString? GetPrompt()
+{
+    var prompt = $"{presenter.Culture.ThreeLetterISOLanguageName} {engine.AngleMode} >";
+    return new FormattedString(prompt,
+                               new FormatSpan(0, 3, AnsiColor.Magenta),
+                               new FormatSpan(3, 5, AnsiColor.Yellow));
 }

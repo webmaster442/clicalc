@@ -1,4 +1,5 @@
-﻿using CliCalc.Interfaces;
+﻿using CliCalc.Domain;
+using CliCalc.Interfaces;
 
 using Spectre.Console;
 
@@ -10,9 +11,9 @@ internal sealed class Clear : IHashMarkCommand
 
     public string Description => "Clears the console window";
 
-    public Task<object> ExecuteAsync(IAnsiConsole ansiConsole, IAPI api, CancellationToken cancellationToken)
+    public Task<HashMarkResult> ExecuteAsync(IAnsiConsole ansiConsole, IMediator mediator, CancellationToken cancellationToken)
     {
         ansiConsole.Clear();
-        return Task.FromResult(new object());
+        return Task.FromResult(new HashMarkResult());
     }
 }

@@ -16,14 +16,6 @@ public class Global
     public double Floor(double x) => Math.Floor(x);
 
     /// <summary>
-    /// Raise to power
-    /// </summary>
-    /// <param name="x">number</param>
-    /// <param name="y">power</param>
-    /// <returns>Value raised to powe</returns>
-    public double Pow(double x, double y) => Math.Pow(x, y);
-
-    /// <summary>
     /// Angle system modes
     /// </summary>
     public enum AngleMode
@@ -31,15 +23,15 @@ public class Global
         /// <summary>
         /// Degrees
         /// </summary>
-        Degrees,
+        Deg,
         /// <summary>
         /// Radians
         /// </summary>
-        Radians,
+        Rad,
         /// <summary>
         /// Gradians
         /// </summary>
-        Gradians
+        Grad
     }
 
     /// <summary>

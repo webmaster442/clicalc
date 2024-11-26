@@ -9,13 +9,15 @@ var hashMarkCommands = HashmarkCommandLoader.GetCommands();
 var engine = new Engine(mediator);
 var presenter = new ResultPresenter(mediator, AnsiConsole.Console);
 
-await using var prompt = new Prompt(
-            callbacks: new EnginePromptCallbacks(hashMarkCommands),
-            configuration: new PromptConfiguration(
+var configuration = new PromptConfiguration(
                 prompt: GetPrompt(),
                 completionItemDescriptionPaneBackground: AnsiColor.Rgb(30, 30, 30),
                 selectedCompletionItemBackground: AnsiColor.Rgb(30, 30, 30),
-                selectedTextBackground: AnsiColor.Rgb(20, 61, 102)));
+                selectedTextBackground: AnsiColor.Rgb(20, 61, 102));
+
+await using var prompt = new Prompt(
+            callbacks: new CliCalcPromptCallbacks(hashMarkCommands),
+            configuration: configuration);
 
 while (true)
 {
@@ -42,11 +44,10 @@ async Task ExecuteHashMark(string text)
         await hashMarkCommands[args.CommandName].ExecuteAsync(args, AnsiConsole.Console, mediator, default);
     else
         AnsiConsole.MarkupLine($"[red bold]Unknown command: {text}[/]");
-
-    prompt
+   configuration.Prompt = GetPrompt();
 }
 
-FormattedString? GetPrompt()
+FormattedString GetPrompt()
 {
     var prompt = $"{presenter.Culture.ThreeLetterISOLanguageName} {engine.AngleMode} >";
     return new FormattedString(prompt,

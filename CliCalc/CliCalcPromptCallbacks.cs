@@ -11,16 +11,16 @@ using PrettyPrompt.Consoles;
 using PrettyPrompt.Documents;
 using PrettyPrompt.Highlighting;
 
-namespace CliCalc.Engine;
+namespace CliCalc;
 
-internal sealed class EnginePromptCallbacks : PromptCallbacks
+internal sealed class CliCalcPromptCallbacks : PromptCallbacks
 {
     private readonly Dictionary<string, string> _hashMarks;
     private readonly Dictionary<string, string> _functions;
     private readonly ImmutableArray<CharacterSetModificationRule> _hasmarkRules;
     private readonly ImmutableArray<CharacterSetModificationRule> _functionRules;
 
-    public EnginePromptCallbacks(IReadOnlyDictionary<string, IHashMarkCommand> commands)
+    public CliCalcPromptCallbacks(IReadOnlyDictionary<string, IHashMarkCommand> commands)
     {
         XmlSerializer serializer = new XmlSerializer(typeof(XmlDoc), new XmlRootAttribute("doc"));
         var file = Path.Combine(AppContext.BaseDirectory, "CliCalc.Functions.xml");

@@ -1,4 +1,6 @@
-﻿namespace CliCalc.Functions;
+﻿using CliCalc.Functions.Internals;
+
+namespace CliCalc.Functions;
 
 /// <summary>
 /// Global scope
@@ -42,6 +44,14 @@ public class Global
     /// <param name="digits">The number of fractional digits in the return value.</param>
     /// <returns>The number nearest to value that contains a number of fractional digits equal to digits.</returns>
     public double Round(double x, int digits) => Math.Round(x, digits);
+
+    /// <summary>
+    /// Decides whether a long number is prime or not.
+    /// </summary>
+    /// <param name="number">A long number to decide</param>
+    /// <returns>True, if the number is prime, otherwise fase.</returns>
+    public bool IsPrime(long number)
+        => Integers.IsPrime(number);
 
     /// <summary>
     /// Represents the ratio of the circumference of a circle to its diameter, specified by the constant, π.

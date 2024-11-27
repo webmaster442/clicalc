@@ -12,7 +12,7 @@ internal sealed class OverridenToStringFormatter : IObjectFormatter
         static bool HasOverriddenToString(object obj)
         {
             Type type = obj.GetType();
-            MethodInfo toStringMethod = type.GetMethod("ToString", BindingFlags.Public | BindingFlags.Instance)!;
+            MethodInfo toStringMethod = type.GetMethod("ToString", BindingFlags.Public | BindingFlags.Instance, Type.EmptyTypes)!;
             return toStringMethod.DeclaringType != typeof(object);
         }
 

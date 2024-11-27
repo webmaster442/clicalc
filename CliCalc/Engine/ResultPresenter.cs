@@ -19,6 +19,7 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
     {
         _formatters =[
             new NumberFormatter(),
+            new FormattableFormatter(),
             new OverridenToStringFormatter(),
             new ObjectMembersFormatter(),
         ];

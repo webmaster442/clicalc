@@ -148,26 +148,89 @@ public class Global
         => Int128.Parse(s, NumberStyles.AllowBinarySpecifier | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingWhite);
 
     /// <summary>
-    /// Angle system modes
+    /// Converts an angle from degrees to radians.
     /// </summary>
-    public enum AngleMode
-    {
-        /// <summary>
-        /// Degrees
-        /// </summary>
-        Deg,
-        /// <summary>
-        /// Radians
-        /// </summary>
-        Rad,
-        /// <summary>
-        /// Gradians
-        /// </summary>
-        Grad
-    }
+    /// <param name="deg">The angle in degrees.</param>
+    /// <returns>The equivalent angle in radians.</returns>
+    public double DegToRad(double deg)
+        => Trigonometry.DegToRad(deg);
 
     /// <summary>
-    /// Current angle mode
+    /// Converts an angle from radians to degrees.
     /// </summary>
-    public AngleMode Mode { get; set; }
+    /// <param name="rad">The angle in radians.</param>
+    /// <returns>The equivalent angle in degrees.</returns>
+    public double RadToDeg(double rad)
+        => Trigonometry.RadToDeg(rad);
+
+    /// <summary>
+    /// Converts an angle from gradians to radians.
+    /// </summary>
+    /// <param name="grad">The angle in gradians.</param>
+    /// <returns>The equivalent angle in radians.</returns>
+    public double GradToRad(double grad)
+        => Trigonometry.GradToRad(grad);
+
+    /// <summary>
+    /// Converts an angle from radians to gradians.
+    /// </summary>
+    /// <param name="rad">The angle in radians</param>
+    /// <returns>The equivalent angle in gradians.</returns>
+    public double RadToGrad(double rad)
+        => Trigonometry.RadToGrad(rad);
+
+    /// <summary>
+    /// Calculates the sine of a specified angle.
+    /// The angle is specified in the unit of measure specified #mode command.
+    /// </summary>
+    /// <param name="angle">an angle</param>
+    /// <returns>The sine of the angle</returns>
+    public double Sin(double angle)
+        => Trigonometry.Sin(angle, Mode);
+
+    /// <summary>
+    /// Calculates the cosine of a specified angle.
+    /// The angle is specified in the unit of measure specified #mode command.
+    /// </summary>
+    /// <param name="angle">an angle</param>
+    /// <returns>The cosine of the angle</returns>
+    public double Cos(double angle)
+        => Trigonometry.Cos(angle, Mode);
+
+    /// <summary>
+    /// Calculates the tangent of a specified angle.
+    /// The angle is specified in the unit of measure specified #mode command.
+    /// </summary>
+    /// <param name="angle">an angle</param>
+    /// <returns>The tangent of the angle</returns>
+    public double Tan(double angle)
+        => Trigonometry.Tan(angle, Mode);
+
+    /// <summary>
+    /// Calculates the arcsine (inverse sine) of a specified number.
+    /// The angle is returned in the unit of measure specified #mode command.
+    /// </summary>
+    /// <param name="x">a number</param>
+    /// <returns>an angle</returns>
+    public double Asin(double x)
+        => Trigonometry.Asin(x, Mode);
+
+    /// <summary>
+    /// Calculates the arccosine (inverse cosine) of a specified number.
+    /// The angle is returned in the unit of measure specified #mode command.
+    /// </summary>
+    /// <param name="x">a number</param>
+    /// <returns>an angle</returns>
+    public double Acos(double x)
+        => Trigonometry.Acos(x, Mode);
+
+    /// <summary>
+    /// Calculates the arctangent (inverse tangent) of a specified number.
+    /// The angle is returned in the unit of measure specified #mode command.
+    /// </summary>
+    /// <param name="x">a number</param>
+    /// <returns>an angle</returns>
+    public double Atan(double x)
+        => Trigonometry.Atan(x, Mode);
+    internal AngleMode Mode { get; set; }
 }

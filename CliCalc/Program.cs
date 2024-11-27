@@ -1,8 +1,10 @@
-﻿using PrettyPrompt.Highlighting;
-using PrettyPrompt;
+﻿using CliCalc;
 using CliCalc.Engine;
+
+using PrettyPrompt;
+using PrettyPrompt.Highlighting;
+
 using Spectre.Console;
-using CliCalc;
 
 var mediator = new Mediator();
 var hashMarkCommands = HashmarkCommandLoader.GetCommands();
@@ -19,6 +21,13 @@ var configuration = new PromptConfiguration(
 await using var prompt = new Prompt(
             callbacks: new CliCalcPromptCallbacks(mediator, hashMarkCommands),
             configuration: configuration);
+
+AnsiConsole.MarkupLine("""
+    
+    Welcome to [magenta bold]CliCalc[/]
+    Type [red italic]#exit[/], [green italic]#help[/] for help.
+
+    """);
 
 while (true)
 {

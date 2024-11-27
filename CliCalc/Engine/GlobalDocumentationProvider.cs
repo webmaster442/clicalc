@@ -37,9 +37,12 @@ internal class GlobalDocumentationProvider : IRequestable<IReadOnlyDictionary<st
             MessageTypes.DataSets.GlobalDocumentation 
                 => _documentation.Members
                             .Where(m => m.IsMethod() || m.IsProperty())
+                            .OrderBy(m => m.GetName())
                             .ToDictionary(m => m.GetName(), m => m.GetDocumentation()),
             MessageTypes.DataSets.HasmarksDocumentation
-                => _hashMarkCommands.ToDictionary(c => c.Key, c => c.Value.Description),
+                => _hashMarkCommands
+                    .OrderBy(c => c.Key)
+                    .ToDictionary(c => c.Key, c => c.Value.Description),
             _ 
                 => throw new UnreachableException(),
         };

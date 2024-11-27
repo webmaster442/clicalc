@@ -2,6 +2,7 @@
 using CliCalc.Functions;
 using CliCalc.Interfaces;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 
@@ -25,7 +26,9 @@ internal sealed class Engine :
         _globalScope = new Global();
         _scriptOptions = ScriptOptions.Default
             .WithLanguageVersion(Microsoft.CodeAnalysis.CSharp.LanguageVersion.Latest)
-            .WithCheckOverflow(true);
+            .WithCheckOverflow(true)
+            .WithAllowUnsafe(false)
+            .WithReferences(typeof(Global).Assembly);
     }
 
     public async Task<Result> Evaluate(string input, CancellationToken cancellationToken)
@@ -52,10 +55,10 @@ internal sealed class Engine :
     public void Reset()
     {
         _scriptState = null;
-        _globalScope.Mode = Global.AngleMode.Deg;
+        _globalScope.Mode = AngleMode.Deg;
     }
 
-    public Global.AngleMode AngleMode
+    public AngleMode AngleMode
         => _globalScope.Mode;
 
     void INotifyable<MessageTypes.ResetMessage>.OnNotify(MessageTypes.ResetMessage message)

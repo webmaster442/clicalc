@@ -6,6 +6,7 @@ using CliCalc;
 
 var mediator = new Mediator();
 var hashMarkCommands = HashmarkCommandLoader.GetCommands();
+var globalDocumentationProvider = new GlobalDocumentationProvider(mediator, hashMarkCommands);
 var engine = new Engine(mediator);
 var presenter = new ResultPresenter(mediator, AnsiConsole.Console);
 
@@ -52,7 +53,7 @@ async Task ExecuteHashMark(string text)
     {
         AnsiConsole.MarkupLine($"[red bold]Unknown command: {text}[/]");
     }
-   configuration.Prompt = GetPrompt();
+    configuration.Prompt = GetPrompt();
 }
 
 FormattedString GetPrompt()

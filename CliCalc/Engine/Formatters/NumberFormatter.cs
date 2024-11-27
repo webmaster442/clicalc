@@ -18,6 +18,9 @@ internal sealed class NumberFormatter : IObjectFormatter
                 or uint
                 or long
                 or ulong
+                or Int128
+                or UInt128
+                or Half
                 or float
                 or double
                 or decimal;

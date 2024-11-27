@@ -42,7 +42,7 @@ internal static partial class XmlDocExtensions
             sb.AppendLine("Parameters:\r\n");
             foreach (var param in member.Param)
             {
-                sb.AppendLine($"{param.Name}: {param.Value}");
+                sb.AppendLine($"{param.Name}: {Cleanup(param.Value)}");
             }
             sb.AppendLine();
         }

@@ -1,9 +1,6 @@
 ﻿using System.Collections.Immutable;
-using System.Xml.Serialization;
 
 using CliCalc.Domain;
-using CliCalc.Domain.XmlDoc;
-using CliCalc.DomainServices;
 using CliCalc.Interfaces;
 
 using PrettyPrompt;
@@ -17,7 +14,7 @@ namespace CliCalc;
 internal sealed class CliCalcPromptCallbacks : PromptCallbacks
 {
     private readonly Dictionary<string, string> _hashMarks;
-    private readonly Dictionary<string, string> _globalMembers;
+    private readonly IReadOnlyDictionary<string, string> _globalMembers;
     private readonly ImmutableArray<CharacterSetModificationRule> _hasmarkRules;
     private readonly ImmutableArray<CharacterSetModificationRule> _functionRules;
     private readonly IMediator _mediator;
@@ -25,18 +22,7 @@ internal sealed class CliCalcPromptCallbacks : PromptCallbacks
     public CliCalcPromptCallbacks(IMediator mediator, IReadOnlyDictionary<string, IHashMarkCommand> commands)
     {
         _mediator = mediator;
-
-        XmlSerializer serializer = new XmlSerializer(typeof(XmlDoc), new XmlRootAttribute("doc"));
-        var file = Path.Combine(AppContext.BaseDirectory, "CliCalc.Functions.xml");
-        XmlDoc document;
-        using (var stream = File.OpenRead(file))
-        {
-            document = serializer.Deserialize(stream) as XmlDoc
-                ?? new XmlDoc();
-        }
-        _globalMembers = document.Members
-            .Where(m => m.IsMethod() || m.IsProperty())
-            .ToDictionary(m => m.GetName(), m => m.GetDocumentation());
+        _globalMembers = _mediator.Request<IReadOnlyDictionary<string, string>>(MessageTypes.DataSets.GlobalDocumentation);
 
         _hashMarks = commands.ToDictionary(x => x.Key.Substring(1), x => x.Value.Description);
         _hasmarkRules = new[] { new CharacterSetModificationRule(CharacterSetModificationKind.Remove, new[] { '#' }.ToImmutableArray()) }.ToImmutableArray();

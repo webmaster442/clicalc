@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CliCalc.Functions.Internals;
+﻿namespace CliCalc.Functions.Internals;
 
 internal static class Integers
 {
@@ -19,5 +13,17 @@ internal static class Integers
             if (number % i == 0 || number % (i + 2) == 0) return false;
         }
         return true;
+    }
+
+    public static Int128 Factorial(int number)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(number, 0, nameof(number));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(number, 33, nameof(number));
+        Int128 result = 1;
+        for (int i = 1; i <= number; i++)
+        {
+            result *= i;
+        }
+        return result;
     }
 }

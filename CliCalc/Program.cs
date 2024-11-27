@@ -16,7 +16,7 @@ var configuration = new PromptConfiguration(
                 selectedTextBackground: AnsiColor.Rgb(20, 61, 102));
 
 await using var prompt = new Prompt(
-            callbacks: new CliCalcPromptCallbacks(hashMarkCommands),
+            callbacks: new CliCalcPromptCallbacks(mediator, hashMarkCommands),
             configuration: configuration);
 
 while (true)

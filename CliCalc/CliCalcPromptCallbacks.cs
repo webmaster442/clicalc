@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Xml.Serialization;
 
+using CliCalc.Domain;
 using CliCalc.Domain.XmlDoc;
 using CliCalc.DomainServices;
 using CliCalc.Interfaces;
@@ -19,9 +20,12 @@ internal sealed class CliCalcPromptCallbacks : PromptCallbacks
     private readonly Dictionary<string, string> _globalMembers;
     private readonly ImmutableArray<CharacterSetModificationRule> _hasmarkRules;
     private readonly ImmutableArray<CharacterSetModificationRule> _functionRules;
+    private readonly IMediator _mediator;
 
-    public CliCalcPromptCallbacks(IReadOnlyDictionary<string, IHashMarkCommand> commands)
+    public CliCalcPromptCallbacks(IMediator mediator, IReadOnlyDictionary<string, IHashMarkCommand> commands)
     {
+        _mediator = mediator;
+
         XmlSerializer serializer = new XmlSerializer(typeof(XmlDoc), new XmlRootAttribute("doc"));
         var file = Path.Combine(AppContext.BaseDirectory, "CliCalc.Functions.xml");
         XmlDoc document;
@@ -45,6 +49,15 @@ internal sealed class CliCalcPromptCallbacks : PromptCallbacks
                                                                                    CancellationToken cancellationToken)
     {
         var typedWord = text.AsSpan(spanToBeReplaced.Start, spanToBeReplaced.Length).ToString();
+
+        var variables = _mediator
+            .Request<IEnumerable<(string name, string typeName)>>(MessageTypes.DataSets.VariablesWithTypes)
+            .Where(x => x.name.StartsWith(typedWord, StringComparison.OrdinalIgnoreCase))
+            .ToDictionary(x => x.name, x => x.typeName);
+
+        if (variables.Count > 0)
+            return ItemsFromDictionary(typedWord, variables, _functionRules);
+
         return text.StartsWith('#')
             ? ItemsFromDictionary(typedWord, _hashMarks, _hasmarkRules)
             : ItemsFromDictionary(typedWord, _globalMembers, _functionRules);
@@ -56,7 +69,7 @@ internal sealed class CliCalcPromptCallbacks : PromptCallbacks
     {
         static string GetReplaceText(string key)
         {
-            return key.Contains('(') 
+            return key.Contains('(')
                 ? key[..(key.IndexOf('(') + 1)]
                 : key;
         }

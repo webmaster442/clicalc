@@ -16,5 +16,6 @@ internal sealed class MessageTypes
     public static class DataSets
     {
         public const string Variables = "Variables";
+        public const string VariablesWithTypes = "VariablesWithTypes";
     }
 }

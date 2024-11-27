@@ -22,7 +22,7 @@ internal sealed class Culture : IHashMarkCommand
         {
             if (args.Count == 0 || string.IsNullOrEmpty(args[0]))
             {
-                return Task.FromResult(new HashMarkResult(false, "No culture specified"));
+                return Task.FromResult(new HashMarkResult("No culture specified"));
             }
             var culture = new CultureInfo(args[0]);
             mediator.Notify(new MessageTypes.CultureChange
@@ -33,7 +33,7 @@ internal sealed class Culture : IHashMarkCommand
         }
         catch (Exception)
         {
-            return Task.FromResult(new HashMarkResult(false, $"Error setting culture: {args[0]}"));
+            return Task.FromResult(new HashMarkResult($"Error setting culture: {args[0]}"));
         }
     }
 }

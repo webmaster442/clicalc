@@ -9,7 +9,8 @@ namespace CliCalc.Engine;
 
 internal sealed class Engine : 
     INotifyable<MessageTypes.ResetMessage>,
-    INotifyable<MessageTypes.ExitMessage>
+    INotifyable<MessageTypes.ExitMessage>,
+    IRequestable<IEnumerable<string>>
 {
     private readonly Global _globalScope;
     private readonly ScriptOptions _scriptOptions;
@@ -53,6 +54,9 @@ internal sealed class Engine :
         _globalScope.Mode = Global.AngleMode.Deg;
     }
 
+    public IEnumerable<string> Variables
+        => _scriptState != null ? _scriptState.Variables.Select(x => x.Name) : [];
+
     public Global.AngleMode AngleMode
         => _globalScope.Mode;
 
@@ -61,4 +65,10 @@ internal sealed class Engine :
 
     void INotifyable<MessageTypes.ExitMessage>.OnNotify(MessageTypes.ExitMessage message)
         => Environment.Exit(0);
+
+    bool IRequestable<IEnumerable<string>>.CanServe(string dataSetName)
+        => dataSetName == MessageTypes.DataSets.Variables;
+
+    IEnumerable<string> IRequestable<IEnumerable<string>>.OnRequest(string dataSet)
+        => Variables;
 }

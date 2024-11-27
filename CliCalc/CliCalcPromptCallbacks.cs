@@ -16,7 +16,7 @@ namespace CliCalc;
 internal sealed class CliCalcPromptCallbacks : PromptCallbacks
 {
     private readonly Dictionary<string, string> _hashMarks;
-    private readonly Dictionary<string, string> _functions;
+    private readonly Dictionary<string, string> _globalMembers;
     private readonly ImmutableArray<CharacterSetModificationRule> _hasmarkRules;
     private readonly ImmutableArray<CharacterSetModificationRule> _functionRules;
 
@@ -30,8 +30,8 @@ internal sealed class CliCalcPromptCallbacks : PromptCallbacks
             document = serializer.Deserialize(stream) as XmlDoc
                 ?? new XmlDoc();
         }
-        _functions = document.Members
-            .Where(m => m.IsFunction())
+        _globalMembers = document.Members
+            .Where(m => m.IsMethod() || m.IsProperty())
             .ToDictionary(m => m.GetName(), m => m.GetDocumentation());
 
         _hashMarks = commands.ToDictionary(x => x.Key.Substring(1), x => x.Value.Description);
@@ -47,16 +47,23 @@ internal sealed class CliCalcPromptCallbacks : PromptCallbacks
         var typedWord = text.AsSpan(spanToBeReplaced.Start, spanToBeReplaced.Length).ToString();
         return text.StartsWith('#')
             ? ItemsFromDictionary(typedWord, _hashMarks, _hasmarkRules)
-            : ItemsFromDictionary(typedWord, _functions, _functionRules);
+            : ItemsFromDictionary(typedWord, _globalMembers, _functionRules);
     }
 
     private static Task<IReadOnlyList<CompletionItem>> ItemsFromDictionary(string typedWord,
-                                                                           Dictionary<string, string> hashMarks,
+                                                                           IEnumerable<KeyValuePair<string, string>> hashMarks,
                                                                            ImmutableArray<CharacterSetModificationRule> rules)
     {
+        static string GetReplaceText(string key)
+        {
+            return key.Contains('(') 
+                ? key[..(key.IndexOf('(') + 1)]
+                : key;
+        }
+
         var list = hashMarks
             .Where(x => x.Key.StartsWith(typedWord, StringComparison.OrdinalIgnoreCase))
-            .Select(x => new CompletionItem(replacementText: x.Key,
+            .Select(x => new CompletionItem(replacementText: GetReplaceText(x.Key),
                                             displayText: x.Key,
                                             getExtendedDescription: (ct) => Task.FromResult(new FormattedString(x.Value)),
                                             commitCharacterRules: rules))

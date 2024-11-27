@@ -12,4 +12,9 @@ internal sealed class MessageTypes
     {
         public required CultureInfo CultureInfo { get; init; }
     }
+
+    public static class DataSets
+    {
+        public const string Variables = "Variables";
+    }
 }

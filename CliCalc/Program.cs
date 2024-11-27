@@ -41,9 +41,17 @@ async Task ExecuteHashMark(string text)
     var args = new Arguments(text);
 
     if (hashMarkCommands.ContainsKey(args.CommandName))
-        await hashMarkCommands[args.CommandName].ExecuteAsync(args, AnsiConsole.Console, mediator, default);
+    {
+        var result = await hashMarkCommands[args.CommandName].ExecuteAsync(args, AnsiConsole.Console, mediator, default);
+        if (!result.Success)
+        {
+            AnsiConsole.MarkupLine($"[red bold]{result.Content}[/]");
+        }
+    }
     else
+    {
         AnsiConsole.MarkupLine($"[red bold]Unknown command: {text}[/]");
+    }
    configuration.Prompt = GetPrompt();
 }
 

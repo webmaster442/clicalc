@@ -9,9 +9,9 @@ internal class HashMarkResult
 
     public bool Success { get; }
 
-    public HashMarkResult(bool success, string content)
+    public HashMarkResult(string content)
     {
-        Success = success;
+        Success = false;
         Content = content;
     }
 

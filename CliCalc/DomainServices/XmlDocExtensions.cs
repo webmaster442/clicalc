@@ -6,19 +6,22 @@ using CliCalc.Domain.XmlDoc;
 namespace CliCalc.DomainServices;
 internal static partial class XmlDocExtensions
 {
-    [GeneratedRegex(@"M\:CliCalc\.Functions\.Global\.(.+)\(")]
+    [GeneratedRegex(@"^(M|P)(\:CliCalc\.Functions\.Global\.)(.+)$")]
     private static partial Regex MethodNameRegex();
 
     [GeneratedRegex(@"\s\s")]
     private static partial Regex RemoveWhiteSpaces();
 
-    public static bool IsFunction(this DocMember member)
-        => member.Name.StartsWith("M:");
+    public static bool IsMethod(this DocMember member)
+        => member.Name.StartsWith('M');
+
+    public static bool IsProperty(this DocMember member)
+        => member.Name.StartsWith('P');
 
     public static string GetName(this DocMember member)
     {
         var parts = MethodNameRegex().Split(member.Name);
-        return parts[1];
+        return parts[^2];
     }
 
     public static string GetDocumentation(this DocMember member)
@@ -29,7 +32,11 @@ internal static partial class XmlDocExtensions
         }
 
         StringBuilder sb = new();
-        sb.AppendLine(member.Summary);
+        sb.AppendLine(Cleanup(member.Summary));
+
+        if (member.Name.StartsWith('P'))
+            return sb.ToString();
+
         if (member.Param.Length > 0)
         {
             sb.AppendLine("Parameters:\r\n");

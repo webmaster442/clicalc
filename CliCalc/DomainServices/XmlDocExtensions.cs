@@ -6,6 +6,19 @@ using CliCalc.Domain.XmlDoc;
 namespace CliCalc.DomainServices;
 internal static partial class XmlDocExtensions
 {
+    private static readonly Dictionary<string, string> _typeNameReplacements = new()
+    {
+        { "System.Double", "double" },
+        { "System.Single", "float" },
+        { "System.Half", "Half" },
+        { "System.Decimal", "decimal" },
+        { "System.Int32", "int" },
+        { "System.Int64", "long" },
+        { "System.Int128", "Int128" },
+        { "System.DateTime", "DateTime" },
+        { "System.TimeSpan", "TimeSpan" },
+    };
+
     [GeneratedRegex(@"^(M|P)(\:CliCalc\.Functions\.Global\.)(.+)$")]
     private static partial Regex MethodNameRegex();
 
@@ -20,8 +33,18 @@ internal static partial class XmlDocExtensions
 
     public static string GetName(this DocMember member)
     {
+        static string CorrectTypeNames(string name)
+        {
+            StringBuilder str = new StringBuilder(name);
+            foreach (var replacement in _typeNameReplacements)
+            {
+                str.Replace(replacement.Key, replacement.Value);
+            }
+            return str.ToString();
+        }
+
         var parts = MethodNameRegex().Split(member.Name);
-        return parts[^2];
+        return CorrectTypeNames(parts[^2]);
     }
 
     public static string GetDocumentation(this DocMember member)

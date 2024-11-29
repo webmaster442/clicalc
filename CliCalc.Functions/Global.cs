@@ -343,4 +343,74 @@ public class Global
     /// <returns>The tangent of the angle</returns>
     public double Tan(double angle)
         => Trigonometry.Tan(angle, Mode);
+
+    /// <summary>
+    /// Returns a TimeSpan that represents a specified number of seconds, where the specification is accurate to the nearest millisecond.
+    /// </summary>
+    /// <param name="seconds">A number of seconds, accurate to the nearest millisecond.</param>
+    /// <returns>An object that represents value.</returns>
+    public TimeSpan Seconds(double seconds) => TimeSpan.FromSeconds(seconds);
+
+    /// <summary>
+    /// Returns a TimeSpan that represents a specified number of minutes, where the specification is accurate to the nearest millisecond.
+    /// </summary>
+    /// <param name="minutes">A number of minutes, accurate to the nearest millisecond.</param>
+    /// <returns>An object that represents value.</returns>
+    public TimeSpan Minutes(double minutes) => TimeSpan.FromMinutes(minutes);
+
+    /// <summary>
+    /// Returns a TimeSpan that represents a specified number of hours, where the specification is accurate to the nearest millisecond.
+    /// </summary>
+    /// <param name="hours">A number of hours accurate to the nearest millisecond.</param>
+    /// <returns>An object that represents value.</returns>
+    public TimeSpan Hours(double hours) => TimeSpan.FromHours(hours);
+
+    /// <summary>
+    /// Returns a TimeSpan that represents a specified number of days, where the specification is accurate to the nearest millisecond.
+    /// </summary>
+    /// <param name="days">A number of days, accurate to the nearest millisecond.</param>
+    /// <returns>An object that represents value.</returns>
+    public TimeSpan Days(double days) => TimeSpan.FromDays(days);
+
+    /// <summary>
+    /// Returns a TimeSpan that represents a specified number of weeks, where the specification is accurate to the nearest millisecond.
+    /// </summary>
+    /// <param name="weeks">A number of weeks, accurate to the nearest millisecond.</param>
+    /// <returns>An object that represents value.</returns>
+    public TimeSpan Weeks(double weeks) => TimeSpan.FromDays(weeks * 7);
+
+    /// <summary>
+    /// Initializes a new instance of the DateTime structure to the specified year, month, and day.
+    /// </summary>
+    /// <param name="year"></param>
+    /// <param name="month"></param>
+    /// <param name="day"></param>
+    /// <returns>A DateTime instance</returns>
+    public DateTime Date(int year, int month, int day)
+        => new DateTime(year, month, day);
+
+    /// <summary>
+    /// Initializes a new instance of the DateTime structure to the specified hour, minute, and second.
+    /// </summary>
+    /// <param name="hour">The hours (0 through 23).</param>
+    /// <param name="minute">The minutes (0 through 59).</param>
+    /// <param name="second">The seconds (0 through 59).</param>
+    /// <returns>A DateTime instance</returns>
+    public DateTime Time(int hour, int minute, int second)
+        => new DateTime(1, 1, 1, hour, minute, second);
+
+    /// <summary>
+    /// Initializes a new instance of the DateTime structure to the specified year, month, day, hour, minute, and second.
+    /// </summary>
+    /// <param name="year">The year (1 through 9999).</param>
+    /// <param name="month">The month (1 through 12).</param>
+    /// <param name="day">The day (1 through the number of days in month).</param>
+    /// <param name="hour">The hours (0 through 23).</param>
+    /// <param name="minute">The minutes (0 through 59).</param>
+    /// <param name="second">The seconds (0 through 59).</param>
+    /// <returns>A DateTime instance</returns>
+    public DateTime DateTime(int year, int month, int day, int hour, int minute, int second)
+        => new DateTime(year, month, day, hour, minute, second);
+
+
 }

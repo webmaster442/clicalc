@@ -22,6 +22,7 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
         _formatters =[
             new NumberFormatter(),
             new ComplexNumberFormatter(),
+            new DateAndTimeFormatter(),
             new FormattableFormatter(),
             new OverridenToStringFormatter(),
             new ObjectMembersFormatter(),

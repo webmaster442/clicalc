@@ -1,13 +1,14 @@
 ﻿using System.Globalization;
 using System.Reflection;
 
+using CliCalc.Functions;
 using CliCalc.Interfaces;
 
 namespace CliCalc.Engine.Formatters;
 
 internal sealed class OverridenToStringFormatter : IObjectFormatter
 {
-    public bool TryFormat(object value, CultureInfo culture, out string? formattedValue)
+    public bool TryFormat(object value, CultureInfo culture, AngleMode angleMode, out string? formattedValue)
     {
         static bool HasOverriddenToString(object obj)
         {

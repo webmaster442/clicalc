@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Globalization;
+﻿using System.Globalization;
 
+using CliCalc.Functions;
 using CliCalc.Interfaces;
 
 namespace CliCalc.Engine.Formatters;
 
 internal sealed class NumberFormatter : IObjectFormatter
 {
-    public bool TryFormat(object value, CultureInfo culture, out string? formattedValue)
+    public bool TryFormat(object value, CultureInfo culture, AngleMode angleMode, out string? formattedValue)
     {
         static bool IsInteger(object value)
         {
@@ -37,13 +37,18 @@ internal sealed class NumberFormatter : IObjectFormatter
         {
             formattedValue = IsInteger(value)
                 ? formattable.ToString("N0", culture)
-                : formattable.ToString("N14", culture)
-                    .TrimEnd('0')
-                    .TrimEnd(culture.NumberFormat.NumberDecimalSeparator[0]);
+                : FormatFloat(formattable, culture);
 
             return true;
         }
         formattedValue = null;
         return false;
+    }
+
+    public static string FormatFloat(IFormattable formattable, CultureInfo culture)
+    {
+        return formattable.ToString("N14", culture)
+            .TrimEnd('0')
+            .TrimEnd(culture.NumberFormat.NumberDecimalSeparator[0]);
     }
 }

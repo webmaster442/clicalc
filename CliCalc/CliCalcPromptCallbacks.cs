@@ -62,6 +62,7 @@ internal sealed class CliCalcPromptCallbacks : PromptCallbacks
 
         var list = hashMarks
             .Where(x => x.Key.StartsWith(typedWord, StringComparison.OrdinalIgnoreCase))
+            .OrderBy(x => x.Key)
             .Select(x => new CompletionItem(replacementText: GetReplaceText(x.Key),
                                             displayText: x.Key,
                                             getExtendedDescription: (ct) => Task.FromResult(new FormattedString(x.Value)),

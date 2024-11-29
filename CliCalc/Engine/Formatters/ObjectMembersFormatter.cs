@@ -2,13 +2,14 @@
 using System.Reflection;
 using System.Text;
 
+using CliCalc.Functions;
 using CliCalc.Interfaces;
 
 namespace CliCalc.Engine.Formatters;
 
 internal sealed class ObjectMembersFormatter : IObjectFormatter
 {
-    public bool TryFormat(object value, CultureInfo culture, out string? formattedValue)
+    public bool TryFormat(object value, CultureInfo culture, AngleMode angleMode, out string? formattedValue)
     {
         var properties = value.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
         StringBuilder sb = new StringBuilder();

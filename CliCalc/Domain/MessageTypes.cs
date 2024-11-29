@@ -19,5 +19,6 @@ internal sealed class MessageTypes
         public const string VariablesWithTypes = "VariablesWithTypes";
         public const string GlobalDocumentation = "GlobalDocumentation";
         public const string HasmarksDocumentation = "HasmarksDocumentation";
+        public const string AngleMode = "AngleMode";
     }
 }

@@ -1,4 +1,6 @@
-﻿using CliCalc.Domain;
+﻿using System.Numerics;
+
+using CliCalc.Domain;
 using CliCalc.Functions;
 using CliCalc.Interfaces;
 
@@ -12,7 +14,8 @@ internal sealed class Engine :
     INotifyable<MessageTypes.ResetMessage>,
     INotifyable<MessageTypes.ExitMessage>,
     IRequestable<IEnumerable<string>>,
-    IRequestable<IEnumerable<(string name, string typeName)>>
+    IRequestable<IEnumerable<(string name, string typeName)>>,
+    IRequestable<AngleMode>
 {
     private readonly Global _globalScope;
     private readonly ScriptOptions _scriptOptions;
@@ -28,8 +31,11 @@ internal sealed class Engine :
             .WithLanguageVersion(Microsoft.CodeAnalysis.CSharp.LanguageVersion.Latest)
             .WithCheckOverflow(true)
             .WithAllowUnsafe(false)
-            .WithReferences(typeof(Global).Assembly);
+            .WithReferences(typeof(Global).Assembly, typeof(Complex).Assembly);
     }
+
+    public AngleMode AngleMode
+        => _globalScope.Mode;
 
     public async Task<Result> Evaluate(string input, CancellationToken cancellationToken)
     {
@@ -58,9 +64,6 @@ internal sealed class Engine :
         _globalScope.Mode = AngleMode.Deg;
     }
 
-    public AngleMode AngleMode
-        => _globalScope.Mode;
-
     void INotifyable<MessageTypes.ResetMessage>.OnNotify(MessageTypes.ResetMessage message)
         => Reset();
 
@@ -78,4 +81,10 @@ internal sealed class Engine :
 
     IEnumerable<(string name, string typeName)> IRequestable<IEnumerable<(string name, string typeName)>>.OnRequest(string dataSet)
         => _scriptState != null ? _scriptState.Variables.Select(x => (x.Name, x.Type.Name)) : [];
+
+    bool IRequestable<AngleMode>.CanServe(string dataSetName)
+        => dataSetName == MessageTypes.DataSets.AngleMode;
+
+    AngleMode IRequestable<AngleMode>.OnRequest(string dataSet)
+        => _globalScope.Mode;
 }

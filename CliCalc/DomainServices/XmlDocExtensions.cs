@@ -37,7 +37,7 @@ internal static partial class XmlDocExtensions
         if (member.Name.StartsWith('P'))
             return sb.ToString();
 
-        if (member.Param.Length > 0)
+        if (member.Param != null && member.Param.Length > 0)
         {
             sb.AppendLine("Parameters:\r\n");
             foreach (var param in member.Param)

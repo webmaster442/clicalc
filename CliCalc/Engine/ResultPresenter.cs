@@ -2,6 +2,7 @@
 
 using CliCalc.Domain;
 using CliCalc.Engine.Formatters;
+using CliCalc.Functions;
 using CliCalc.Interfaces;
 
 using Spectre.Console;
@@ -11,6 +12,7 @@ namespace CliCalc.Engine;
 internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
 {
     private readonly IObjectFormatter[] _formatters;
+    private readonly Mediator _mediator;
     private readonly IAnsiConsole _console;
 
     public CultureInfo Culture { get; set; }
@@ -19,13 +21,15 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
     {
         _formatters =[
             new NumberFormatter(),
+            new ComplexNumberFormatter(),
             new FormattableFormatter(),
             new OverridenToStringFormatter(),
             new ObjectMembersFormatter(),
         ];
         Culture = CultureInfo.CurrentUICulture;
+        _mediator = mediator;
         _console = console;
-        mediator.Register(this);
+        _mediator.Register(this);
     }
 
     public void Display(Result result)
@@ -38,12 +42,14 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
 
     private void Success(object? obj)
     {
+        AngleMode angleMode = _mediator.Request<AngleMode>(MessageTypes.DataSets.AngleMode);
+
         if (obj == null)
             return;
 
         foreach (var formatter in _formatters)
         {
-            if (formatter.TryFormat(obj, Culture, out string? formatted))
+            if (formatter.TryFormat(obj, Culture, angleMode, out string? formatted))
             {
                 _console.MarkupLine($"[green]{formatted}[/]");
                 return;
@@ -51,6 +57,6 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
         }
     }
 
-    void INotifyable<MessageTypes.CultureChange>.OnNotify(MessageTypes.CultureChange message) 
+    void INotifyable<MessageTypes.CultureChange>.OnNotify(MessageTypes.CultureChange message)
         => Culture = message.CultureInfo;
 }

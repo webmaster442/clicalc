@@ -8,7 +8,7 @@ namespace CliCalc.Functions;
 /// <summary>
 /// Global scope
 /// </summary>
-public class Global
+public sealed class Global
 {
     /// <summary>
     /// Represents the natural logarithmic base, specified by the constant, e.
@@ -412,5 +412,30 @@ public class Global
     public DateTime DateTime(int year, int month, int day, int hour, int minute, int second)
         => new DateTime(year, month, day, hour, minute, second);
 
+    /// <summary>
+    /// Calculates the greatest common divisor (GCD) of two integers using the Euclidean algorithm. The GCD is the largest positive integer that divides both numbers without leaving a remainder.
+    /// </summary>
+    /// <param name="a">The first integer.</param>
+    /// <param name="b">The second integer.</param>
+    /// <returns>The greatest common divisor of a and b.</returns>
+    public long Gcd(long a, long b)
+        => Integers.GreatestCommonDivisor(a, b);
 
+    /// <summary>
+    /// Calculates the least common multiple (LCM) of two integers. The LCM is the smallest positive integer that is divisible by both numbers.
+    /// </summary>
+    /// <param name="a">The first integer.</param>
+    /// <param name="b">The second integer.</param>
+    /// <returns>The least common multiple of a and b.</returns>
+    public long Lcm(long a, long b)
+        => Integers.Lcm(a, b);
+
+    /// <summary>
+    /// Creates a fraction representation from the given numerator and denominator. The fraction is usually reduced to its simplest form.
+    /// </summary>
+    /// <param name="numerator">The numerator of the fraction.</param>
+    /// <param name="denominator">The denominator of the fraction.</param>
+    /// <returns>A fraction object representing the ratio numerator/denominator.</returns>
+    public Fraction Fraction(long numerator, long denominator)
+        => new Fraction(numerator, denominator);
 }

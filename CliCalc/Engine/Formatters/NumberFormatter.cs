@@ -2,6 +2,7 @@
 using System.Globalization;
 
 using CliCalc.Functions;
+using CliCalc.Functions.Internals;
 using CliCalc.Interfaces;
 
 namespace CliCalc.Engine.Formatters;
@@ -32,6 +33,13 @@ internal sealed class NumberFormatter : IObjectFormatter
                 or double
                 or decimal;
         }
+
+        if (value is Fraction fraction)
+        {
+            formattedValue = fraction.ToString("N0", culture);
+            return true;
+        }
+
 
         if ((IsInteger(value) || IsFloat(value))
             && value is IFormattable formattable)

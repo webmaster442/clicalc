@@ -36,6 +36,7 @@ internal class GlobalDocumentationProvider : IRequestable<IReadOnlyDictionary<st
         {
             MessageTypes.DataSets.GlobalDocumentation 
                 => _documentation.Members
+                            .Where(m => m.Name.Contains("CliCalc.Functions.Global."))
                             .Where(m => m.IsMethod() || m.IsProperty())
                             .OrderBy(m => m.GetName())
                             .ToDictionary(m => m.GetName(), m => m.GetDocumentation()),

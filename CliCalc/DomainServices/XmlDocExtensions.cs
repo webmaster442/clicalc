@@ -26,7 +26,7 @@ internal static partial class XmlDocExtensions
     private static partial Regex RemoveWhiteSpaces();
 
     public static bool IsMethod(this DocMember member)
-        => member.Name.StartsWith('M');
+        => member.Name.StartsWith('M') && !member.Name.Contains("#ctor");
 
     public static bool IsProperty(this DocMember member)
         => member.Name.StartsWith('P');

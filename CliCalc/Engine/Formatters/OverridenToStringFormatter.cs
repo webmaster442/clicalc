@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Reflection;
 
 using CliCalc.Functions;
@@ -8,7 +9,7 @@ namespace CliCalc.Engine.Formatters;
 
 internal sealed class OverridenToStringFormatter : IObjectFormatter
 {
-    public bool TryFormat(object value, CultureInfo culture, AngleMode angleMode, out string? formattedValue)
+    public bool TryFormat(object value, CultureInfo culture, AngleMode angleMode, [NotNullWhen(true)] out string? formattedValue)
     {
         static bool HasOverriddenToString(object obj)
         {
@@ -23,7 +24,7 @@ internal sealed class OverridenToStringFormatter : IObjectFormatter
             return false;
         }
 
-        formattedValue = value.ToString();
+        formattedValue = value.ToString() ?? "null";
         return true;
 
     }

@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Numerics;
 using System.Text;
 
@@ -10,7 +11,7 @@ namespace CliCalc.Engine.Formatters;
 
 internal sealed class ComplexNumberFormatter : IObjectFormatter
 {
-    public bool TryFormat(object value, CultureInfo culture, AngleMode angleMode, out string? formattedValue)
+    public bool TryFormat(object value, CultureInfo culture, AngleMode angleMode, [NotNullWhen(true)] out string? formattedValue)
     {
         static string ConvertAngle(double angle, CultureInfo culture, AngleMode angleMode)
         {

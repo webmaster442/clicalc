@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 using CliCalc.Functions;
@@ -8,7 +8,7 @@ namespace CliCalc.Engine.Formatters;
 
 internal sealed class FormattableFormatter : IObjectFormatter
 {
-    public bool TryFormat(object value, CultureInfo culture, AngleMode angleMode, out string? formattedValue)
+    public bool TryFormat(object value, CultureInfo culture, AngleMode angleMode, [NotNullWhen(true)] out string? formattedValue)
     {
         if (value is IFormattable formattable)
         {

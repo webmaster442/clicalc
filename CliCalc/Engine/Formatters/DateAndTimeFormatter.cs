@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 using CliCalc.Functions;
 using CliCalc.Interfaces;
@@ -7,7 +8,7 @@ namespace CliCalc.Engine.Formatters;
 
 internal sealed class DateAndTimeFormatter : IObjectFormatter
 {
-    public bool TryFormat(object value, CultureInfo culture, AngleMode angleMode, out string? formattedValue)
+    public bool TryFormat(object value, CultureInfo culture, AngleMode angleMode, [NotNullWhen(true)] out string? formattedValue)
     {
         if (value is DateTime dateTime)
         {

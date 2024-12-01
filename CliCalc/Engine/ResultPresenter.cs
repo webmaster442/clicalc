@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Reflection;
 
 using CliCalc.Domain;
 using CliCalc.Engine.Formatters;
@@ -25,7 +27,6 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
             new DateAndTimeFormatter(),
             new FormattableFormatter(),
             new OverridenToStringFormatter(),
-            new ObjectMembersFormatter(),
         ];
         Culture = CultureInfo.CurrentUICulture;
         _mediator = mediator;
@@ -38,6 +39,19 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
         result.Handle(Success, Failure);
     }
 
+    private bool TryFormat(object obj, AngleMode angleMode, [NotNullWhen(true)] out string? formatted)
+    {
+        foreach (var formatter in _formatters)
+        {
+            if (formatter.TryFormat(obj, Culture, angleMode, out formatted))
+            {
+                return true;
+            }
+        }
+        formatted = null;
+        return false;
+    }
+
     private void Failure(Exception exception)
         => _console.MarkupLine($"[bold red]{exception.Message}[/]");
 
@@ -48,12 +62,33 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
         if (obj == null)
             return;
 
-        foreach (var formatter in _formatters)
+        if (TryFormat(obj, angleMode, out var formatted))
         {
-            if (formatter.TryFormat(obj, Culture, angleMode, out string? formatted))
+            AnsiConsole.MarkupLine($"[bold green]{formatted.EscapeMarkup()}[/]");
+        }
+        else
+        {
+            //format using property display
+            var properties = obj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            Table table = new Table();
+            table.AddColumns("Property", "Value");
+            foreach (var property in properties)
             {
-                _console.MarkupLine($"[green]{formatted}[/]");
-                return;
+                var propValue = property.GetValue(obj);
+                if (propValue == null)
+                {
+                    table.AddRow(property.Name, "null");
+                    continue;
+                }
+                if (TryFormat(propValue, angleMode, out string? formattedPropValue))
+                {
+                    table.AddRow(property.Name, formattedPropValue);
+                }
+                else
+                {
+                    table.AddRow(property.Name, propValue.ToString() ?? "null");
+                }
+                AnsiConsole.Write(table);
             }
         }
     }

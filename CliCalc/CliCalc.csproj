@@ -20,9 +20,12 @@
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>dotnet;cli;calculator;calc;script</PackageTags>
-
   </PropertyGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="CliCalc.Tests"/>
+    </ItemGroup>
+    
   <ItemGroup>
     <None Include="..\README.md">
       <Pack>True</Pack>

@@ -438,4 +438,14 @@ public sealed class Global
     /// <returns>A fraction object representing the ratio numerator/denominator.</returns>
     public Fraction Fraction(long numerator, long denominator)
         => new Fraction(numerator, denominator);
+
+    /// <summary>
+    /// Solve a polinomal equation. Supports linear, quadratic and cubic equations.
+    /// Coefficients must be provided in ascending order of the power of x.
+    /// Example: 2x^2 + 7x + 3 = 0 => SolvePolinomalEquation(3, 7, 2)
+    /// </summary>
+    /// <param name="coefficients">Coefficients, powers of x</param>
+    /// <returns>Equation solutions</returns>
+    public EquationSolution SolvePolinomalEquation(params double[] coefficients)
+        => EquationSolver.Solve(coefficients);
 }

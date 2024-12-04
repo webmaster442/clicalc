@@ -39,4 +39,14 @@ internal sealed class Mediator : IMediator
     {
         _mediatables.Add(mediatable);
     }
+
+    public void UnRegister(IMediatable mediatable)
+    {
+        _mediatables.Remove(mediatable);
+    }
+
+    public void Dispose()
+    {
+        _mediatables.Clear();
+    }
 }

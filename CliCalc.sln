@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliCalc", "CliCalc\CliCalc.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliCalc.Functions", "CliCalc.Functions\CliCalc.Functions.csproj", "{291B1839-8D59-493E-8CE2-4B3378F08AC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliCalc.Tests", "CliCalc.Tests\CliCalc.Tests.csproj", "{DEC4ED1C-5560-4A22-BA87-6E47FFD2709D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{291B1839-8D59-493E-8CE2-4B3378F08AC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{291B1839-8D59-493E-8CE2-4B3378F08AC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{291B1839-8D59-493E-8CE2-4B3378F08AC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEC4ED1C-5560-4A22-BA87-6E47FFD2709D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEC4ED1C-5560-4A22-BA87-6E47FFD2709D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEC4ED1C-5560-4A22-BA87-6E47FFD2709D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEC4ED1C-5560-4A22-BA87-6E47FFD2709D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

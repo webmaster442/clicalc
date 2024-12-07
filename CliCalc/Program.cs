@@ -1,4 +1,6 @@
-﻿using CliCalc;
+﻿using System.Globalization;
+
+using CliCalc;
 using CliCalc.Engine;
 
 using PrettyPrompt;
@@ -6,11 +8,13 @@ using PrettyPrompt.Highlighting;
 
 using Spectre.Console;
 
-var mediator = new Mediator();
+Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+using var mediator = new Mediator();
 var hashMarkCommands = HashmarkCommandLoader.GetCommands();
 var globalDocumentationProvider = new GlobalDocumentationProvider(mediator, hashMarkCommands);
 var engine = new Engine(mediator);
-var presenter = new ResultPresenter(mediator, AnsiConsole.Console);
+var presenter = new ResultPresenter(mediator, AnsiConsole.Console, CultureInfo.CurrentUICulture);
 
 var configuration = new PromptConfiguration(
                 prompt: GetPrompt(),
@@ -52,9 +56,9 @@ async Task ExecuteHashMark(string text, CancellationToken cancellationToken)
 {
     var args = new Arguments(text);
 
-    if (hashMarkCommands.ContainsKey(args.CommandName))
+    if (hashMarkCommands.TryGetValue(args.CommandName, out CliCalc.Interfaces.IHashMarkCommand? value))
     {
-        var result = await hashMarkCommands[args.CommandName].ExecuteAsync(args, AnsiConsole.Console, mediator, cancellationToken);
+        var result = await value.ExecuteAsync(args, AnsiConsole.Console, mediator, cancellationToken);
         if (!result.Success)
         {
             AnsiConsole.MarkupLine($"[red bold]{result.Content}[/]");

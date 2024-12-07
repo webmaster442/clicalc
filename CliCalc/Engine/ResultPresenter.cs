@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using System.Reflection;
 
 using CliCalc.Domain;
@@ -19,7 +20,7 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
 
     public CultureInfo Culture { get; set; }
 
-    public ResultPresenter(Mediator mediator, IAnsiConsole console)
+    public ResultPresenter(Mediator mediator, IAnsiConsole console, CultureInfo cultureInfo)
     {
         _formatters =[
             new NumberFormatter(),
@@ -28,7 +29,7 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
             new FormattableFormatter(),
             new OverridenToStringFormatter(),
         ];
-        Culture = CultureInfo.CurrentUICulture;
+        Culture = cultureInfo;
         _mediator = mediator;
         _console = console;
         _mediator.Register(this);
@@ -64,12 +65,28 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
 
         if (TryFormat(obj, angleMode, out var formatted))
         {
-            AnsiConsole.MarkupLine($"[bold green]{formatted.EscapeMarkup()}[/]");
+            _console.MarkupLine($"[bold green]{formatted.EscapeMarkup()}[/]");
+        }
+        else if (obj is IEnumerable<IFormattable> enumerable)
+        {
+            int index = 0;
+            foreach (var item in enumerable)
+            {
+                if (TryFormat(item, angleMode, out var formattedItem))
+                {
+                    _console.MarkupLine($"{index}: [bold green]{formattedItem.EscapeMarkup()}[/]");
+                }
+                ++index;
+            }
         }
         else
         {
             //format using property display
             var properties = obj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            if (properties.Length == 0)
+            {
+                _console.MarkupLine("[yellow]result was not null, but can't be formatted[/]");
+            }
             Table table = new Table();
             table.AddColumns("Property", "Value");
             foreach (var property in properties)
@@ -88,7 +105,7 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
                 {
                     table.AddRow(property.Name, propValue.ToString() ?? "null");
                 }
-                AnsiConsole.Write(table);
+                _console.Write(table);
             }
         }
     }

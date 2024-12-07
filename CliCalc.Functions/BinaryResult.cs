@@ -5,7 +5,26 @@
 /// </summary>
 public sealed class BinaryResult
 {
-    private readonly byte[] _data;
+    /// <summary>
+    /// The data
+    /// </summary>
+    public byte[] Data { get; }
+
+    /// <summary>
+    /// Returns the data as long
+    /// </summary>
+    public long DataAsLong => BitConverter.ToInt64(Data, 0);
+
+    /// <summary>
+    /// Returns the data as double
+    /// </summary>
+    public double DataAsDouble => BitConverter.ToDouble(Data, 0);
+
+    /// <summary>
+    /// The data was created from a long
+    /// </summary>
+    public bool IsLong { get; }
+
 
     /// <summary>
     /// Creates a new instance form a long result
@@ -13,7 +32,8 @@ public sealed class BinaryResult
     /// <param name="data">the data source long</param>
     public BinaryResult(long data)
     {
-        _data = BitConverter.GetBytes(data);
+        IsLong = true;
+        Data = BitConverter.GetBytes(data);
     }
 
     /// <summary>
@@ -22,6 +42,7 @@ public sealed class BinaryResult
     /// <param name="data">the data source double</param>
     public BinaryResult(double data)
     {
-        _data = BitConverter.GetBytes(data);
+        IsLong = false;
+        Data = BitConverter.GetBytes(data);
     }
 }

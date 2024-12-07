@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Numerics;
 
-namespace CliCalc.Functions.Internals;
+using CliCalc.Functions.Internals;
+
+namespace CliCalc.Functions;
 
 /// <summary>
 /// Represents a collection of solutions for an equation.
@@ -35,8 +37,8 @@ public sealed class EquationSolution : IEnumerable<IFormattable>
     {
         foreach (var solution in _rawSolutions)
         {
-            yield return Doubles.IsCloseTo(solution.Imaginary, 0.0, 1E-9) 
-                ? solution.Real 
+            yield return Doubles.IsCloseTo(solution.Imaginary, 0.0, 1E-9)
+                ? solution.Real
                 : (IFormattable)solution;
         }
     }

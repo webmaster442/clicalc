@@ -23,6 +23,7 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
     public ResultPresenter(Mediator mediator, IAnsiConsole console, CultureInfo cultureInfo)
     {
         _formatters =[
+            new BinaryResultFormatter(),
             new NumberFormatter(),
             new ComplexNumberFormatter(),
             new DateAndTimeFormatter(),
@@ -103,7 +104,7 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
                 }
                 else
                 {
-                    table.AddRow(property.Name, propValue.ToString() ?? "null");
+                    table.AddRow(property.Name, propValue.ToString().EscapeMarkup() ?? "null");
                 }
                 _console.Write(table);
             }

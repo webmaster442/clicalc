@@ -29,6 +29,8 @@ AnsiConsole.MarkupLine("""
 
     """);
 
+using ConsoleCancellationTokenSource cts = new();
+
 while (true)
 {
     var response = await prompt.ReadLineAsync().ConfigureAwait(false);
@@ -36,23 +38,23 @@ while (true)
     {
         if (response.Text.StartsWith('#'))
         {
-            await ExecuteHashMark(response.Text);
+            await ExecuteHashMark(response.Text, cts.Token).ConfigureAwait(false);
         }
         else
         {
-            var result = await engine.Evaluate(response.Text, default);
+            var result = await engine.Evaluate(response.Text, cts.Token).ConfigureAwait(false);
             presenter.Display(result);
         }
     }
 }
 
-async Task ExecuteHashMark(string text)
+async Task ExecuteHashMark(string text, CancellationToken cancellationToken)
 {
     var args = new Arguments(text);
 
     if (hashMarkCommands.ContainsKey(args.CommandName))
     {
-        var result = await hashMarkCommands[args.CommandName].ExecuteAsync(args, AnsiConsole.Console, mediator, default);
+        var result = await hashMarkCommands[args.CommandName].ExecuteAsync(args, AnsiConsole.Console, mediator, cancellationToken);
         if (!result.Success)
         {
             AnsiConsole.MarkupLine($"[red bold]{result.Content}[/]");

@@ -5,16 +5,19 @@ using System.Reflection;
 
 using CliCalc.Domain;
 using CliCalc.Engine.Formatters;
+using CliCalc.Engine.Renderers;
 using CliCalc.Functions;
 using CliCalc.Interfaces;
 
 using Spectre.Console;
+using Spectre.Console.Rendering;
 
 namespace CliCalc.Engine;
 
 internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
 {
     private readonly IObjectFormatter[] _formatters;
+    private readonly IObjectRenderer[] _renderers;
     private readonly Mediator _mediator;
     private readonly IAnsiConsole _console;
 
@@ -22,8 +25,10 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
 
     public ResultPresenter(Mediator mediator, IAnsiConsole console, CultureInfo cultureInfo)
     {
+        _renderers = [
+            new BinaryRenderer(),
+        ];
         _formatters =[
-            new BinaryResultFormatter(),
             new NumberFormatter(),
             new ComplexNumberFormatter(),
             new DateAndTimeFormatter(),
@@ -39,6 +44,19 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
     public void Display(Result result)
     {
         result.Handle(Success, Failure);
+    }
+
+    private bool TryRender(object obj, AngleMode angleMode, [NotNullWhen(true)] out IRenderable? renderable)
+    {
+        foreach (var renderer in _renderers)
+        {
+            if (renderer.TryRender(obj, Culture, angleMode, out renderable))
+            {
+                return true;
+            }
+        }
+        renderable = null;
+        return false;
     }
 
     private bool TryFormat(object obj, AngleMode angleMode, [NotNullWhen(true)] out string? formatted)
@@ -64,7 +82,11 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
         if (obj == null)
             return;
 
-        if (TryFormat(obj, angleMode, out var formatted))
+        if (TryRender(obj, angleMode, out var renderable))
+        {
+            _console.Write(renderable);
+        }
+        else if (TryFormat(obj, angleMode, out var formatted))
         {
             _console.MarkupLine($"[bold green]{formatted.EscapeMarkup()}[/]");
         }

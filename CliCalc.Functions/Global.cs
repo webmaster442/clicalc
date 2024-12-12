@@ -450,55 +450,34 @@ public sealed class Global
         => EquationSolver.Solve(coefficients);
 
     /// <summary>
-    /// Performs a bitwise AND operation on two long values and returns the result as an informative object.
+    /// Converts an integer to a binary representation.
     /// </summary>
-    /// <param name="left">The first operand for the bitwise AND operation.</param>
-    /// <param name="right">The second operand for the bitwise AND operation.</param>
-    /// <returns>The result of the operation with various informations.</returns>
-    public BinaryResult And(long left, long right)
-        => new BinaryResult(left & right);
+    /// <param name="value">integer to convert</param>
+    /// <returns>Binary representation</returns>
+    public Binary ToBinary(int value)
+        => new(BitConverter.GetBytes(value));
 
     /// <summary>
-    /// Performs a bitwise OR operation on two long values and returns the result as an informative object.
+    /// Converts an long to a binary representation.
     /// </summary>
-    /// <param name="left">The first operand for the bitwise OR operation.</param>
-    /// <param name="right">The second operand for the bitwise OR operation.</param>
-    /// <returns>The result of the operation with various informations.</returns>
-    public BinaryResult Or(long left, long right)
-        => new BinaryResult(left | right);
+    /// <param name="value">long to convert</param>
+    /// <returns>Binary representation</returns>
+    public Binary ToBinary(long value)
+        => new(BitConverter.GetBytes(value));
 
     /// <summary>
-    /// Performs a bitwise XOR operation on two long values and returns the result as an informative object.
+    /// Converts an double to a binary representation.
     /// </summary>
-    /// <param name="left">The first operand long number for the bitwise XOR operation.</param>
-    /// <param name="right">The second operand long number for the bitwise XOR operation.</param>
-    /// <returns>The result of the operation with various informations.</returns>
-    public BinaryResult Xor(long left, long right)
-        => new BinaryResult(left ^ right);
+    /// <param name="value">double to convert</param>
+    /// <returns>Binary representation</returns>
+    public Binary ToBinary(double value)
+        => new(BitConverter.GetBytes(value));
 
     /// <summary>
-    /// Performs a bitwise NOT operation on a long value and returns the result as an informative object.
+    /// Converts a float to a binary representation.
     /// </summary>
-    /// <param name="value">The value long number to be negated</param>
-    /// <returns>The result of the operation with various informations.</returns>
-    public BinaryResult Not(long value)
-        => new BinaryResult(~value);
-
-    /// <summary>
-    /// Performs a bitwise left shift operation on a long value and returns the result as an informative object.
-    /// </summary>
-    /// <param name="value">The first operand long number that will be shifted.</param>
-    /// <param name="shift">The shift amount as an integer.</param>
-    /// <returns>The result of the operation with various informations.</returns>
-    public BinaryResult LeftShift(long value, int shift)
-        => new BinaryResult(value << shift);
-
-    /// <summary>
-    /// Performs a bitwise right shift operation on a long value and returns the result as an informative object.
-    /// </summary>
-    /// <param name="value">The first operand long number that will be shifted.</param>
-    /// <param name="shift">The shift amount as an integer</param>
-    /// <returns>The result of the operation with various informations.</returns>
-    public BinaryResult RightShift(long value, int shift)
-        => new BinaryResult(value >> shift);
+    /// <param name="value">float to convert</param>
+    /// <returns>Binary representation</returns>
+    public Binary ToBinary(float value)
+        => new(BitConverter.GetBytes(value));
 }

@@ -466,7 +466,7 @@ public sealed class Global
         => new(BitConverter.GetBytes(value));
 
     /// <summary>
-    /// Converts an double to a binary representation.
+    /// Converts a double precision floating-point number to a binary representation.
     /// </summary>
     /// <param name="value">double to convert</param>
     /// <returns>Binary representation</returns>
@@ -474,10 +474,26 @@ public sealed class Global
         => new(BitConverter.GetBytes(value));
 
     /// <summary>
-    /// Converts a float to a binary representation.
+    /// Converts a single precision floating-point number to a binary representation.
     /// </summary>
     /// <param name="value">float to convert</param>
     /// <returns>Binary representation</returns>
     public Binary ToBinary(float value)
         => new(BitConverter.GetBytes(value));
+
+    /// <summary>
+    /// Checks if a double precision floating-point number can be exactly represented as a decimal number.
+    /// </summary>
+    /// <param name="number">number to check</param>
+    /// <returns>true, if the number can be represented exactly in the double type, false if it can be represented with rounding errors</returns>
+    public bool CanBeExactlyRepresented(double number)
+        => Doubles.IsExact(number);
+
+    /// <summary>
+    /// Checks if a double precision floating-point number can be exactly represented as a decimal number.
+    /// </summary>
+    /// <param name="number">number to check</param>
+    /// <returns>true, if the number can be represented exactly in the double type, false if it can be represented with rounding errors</returns>
+    public bool CanBeExactlyRepresented(float number)
+        => Doubles.IsExact(number);
 }

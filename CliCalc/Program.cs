@@ -2,6 +2,7 @@
 
 using CliCalc;
 using CliCalc.Engine;
+using CliCalc.Infrastructure;
 
 using PrettyPrompt;
 using PrettyPrompt.Highlighting;
@@ -10,21 +11,24 @@ using Spectre.Console;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
+ConfigReader configReader = new();
 using var mediator = new Mediator();
 var hashMarkCommands = HashmarkCommandLoader.GetCommands();
 var globalDocumentationProvider = new GlobalDocumentationProvider(mediator, hashMarkCommands);
-var engine = new Engine(mediator);
+
+var programConfiguration = await configReader.ReadAsync();
+
+var engine = new Engine(mediator, programConfiguration);
 var presenter = new ResultPresenter(mediator, AnsiConsole.Console, CultureInfo.CurrentUICulture);
 
-var configuration = new PromptConfiguration(
-                prompt: GetPrompt(),
-                completionItemDescriptionPaneBackground: AnsiColor.Rgb(30, 30, 30),
-                selectedCompletionItemBackground: AnsiColor.Rgb(30, 30, 30),
-                selectedTextBackground: AnsiColor.Rgb(20, 61, 102));
+var promptConfiguration = new PromptConfiguration(prompt: GetPrompt(),
+                                                  completionItemDescriptionPaneBackground: AnsiColor.Rgb(30, 30, 30),
+                                                  selectedCompletionItemBackground: AnsiColor.Rgb(30, 30, 30),
+                                                  selectedTextBackground: AnsiColor.Rgb(20, 61, 102));
 
 await using var prompt = new Prompt(
             callbacks: new CliCalcPromptCallbacks(mediator, hashMarkCommands),
-            configuration: configuration);
+            configuration: promptConfiguration);
 
 AnsiConsole.MarkupLine("""
     
@@ -34,6 +38,8 @@ AnsiConsole.MarkupLine("""
     """);
 
 using ConsoleCancellationTokenSource cts = new();
+
+await engine.Initialize();
 
 while (true)
 {
@@ -68,7 +74,7 @@ async Task ExecuteHashMark(string text, CancellationToken cancellationToken)
     {
         AnsiConsole.MarkupLine($"[red bold]Unknown command: {text}[/]");
     }
-    configuration.Prompt = GetPrompt();
+    promptConfiguration.Prompt = GetPrompt();
 }
 
 FormattedString GetPrompt()

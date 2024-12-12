@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using System.Globalization;
+using System.Numerics;
+using System.Text;
 
 using CliCalc.Domain;
 using CliCalc.Functions;
@@ -11,7 +13,7 @@ using Microsoft.CodeAnalysis.Scripting;
 namespace CliCalc.Engine;
 
 internal sealed class Engine : 
-    INotifyable<MessageTypes.ResetMessage>,
+    IAsyncNotifyable<MessageTypes.ResetMessage>,
     INotifyable<MessageTypes.ExitMessage>,
     IRequestable<IEnumerable<string>>,
     IRequestable<IEnumerable<(string name, string typeName)>>,
@@ -20,11 +22,13 @@ internal sealed class Engine :
     private readonly Global _globalScope;
     private readonly ScriptOptions _scriptOptions;
     private readonly IMediator _mediator;
+    private readonly Configuration _configuration;
     private ScriptState<object>? _scriptState;
 
-    public Engine(IMediator mediator)
+    public Engine(IMediator mediator, Configuration configuration)
     {
         _mediator = mediator;
+        _configuration = configuration;
         _mediator.Register(this);
         _globalScope = new Global();
         _scriptOptions = ScriptOptions.Default
@@ -37,14 +41,27 @@ internal sealed class Engine :
     public AngleMode AngleMode
         => _globalScope.Mode;
 
+    public async Task Initialize()
+    {
+        StringBuilder statements = new StringBuilder();
+        foreach (var constant in _configuration.Constants)
+        {
+            statements.AppendLine($"const double {constant.Key} = {constant.Value.ToString(CultureInfo.InvariantCulture)};");
+        }
+        foreach (var variable in _configuration.Variables)
+        {
+            statements.AppendLine($"double {variable.Key} = {variable.Value.ToString(CultureInfo.InvariantCulture)};");
+        }
+        _scriptState = await CSharpScript.RunAsync(statements.ToString(), _scriptOptions, _globalScope);
+    }
+
     public async Task<Result> Evaluate(string input, CancellationToken cancellationToken)
     {
         try
         {
             if (_scriptState == null)
             {
-                _scriptState = await CSharpScript.RunAsync(input, _scriptOptions, _globalScope, cancellationToken: cancellationToken);
-                return Result.Success(_scriptState.ReturnValue);
+                throw new InvalidOperationException("Engine has not been initialized");
             }
             else
             {
@@ -58,14 +75,15 @@ internal sealed class Engine :
         }
     }
 
-    public void Reset()
+    public async Task Reset()
     {
         _scriptState = null;
+        await Initialize();
         _globalScope.Mode = AngleMode.Deg;
     }
 
-    void INotifyable<MessageTypes.ResetMessage>.OnNotify(MessageTypes.ResetMessage message)
-        => Reset();
+    async Task IAsyncNotifyable<MessageTypes.ResetMessage>.OnNotifyAsync(MessageTypes.ResetMessage message)
+        => await Reset();
 
     void INotifyable<MessageTypes.ExitMessage>.OnNotify(MessageTypes.ExitMessage message)
         => Environment.Exit(0);

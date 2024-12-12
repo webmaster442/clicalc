@@ -23,7 +23,7 @@
   </PropertyGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="CliCalc.Tests"/>
+        <InternalsVisibleTo Include="CliCalc.Tests" />
     </ItemGroup>
     
   <ItemGroup>

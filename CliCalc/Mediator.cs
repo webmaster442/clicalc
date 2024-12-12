@@ -1,4 +1,5 @@
-﻿using CliCalc.Interfaces;
+﻿
+using CliCalc.Interfaces;
 
 namespace CliCalc;
 
@@ -18,6 +19,17 @@ internal sealed class Mediator : IMediator
             if (mediatable is INotifyable<T> notifyable)
             {
                 notifyable.OnNotify(message);
+            }
+        }
+    }
+
+    public async Task NotifyAsync<T>(T message)
+    {
+        foreach (var mediatable in _mediatables)
+        {
+            if (mediatable is IAsyncNotifyable<T> notifyable)
+            {
+                await notifyable.OnNotifyAsync(message);
             }
         }
     }

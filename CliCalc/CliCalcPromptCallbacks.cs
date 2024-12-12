@@ -15,6 +15,8 @@ internal sealed class CliCalcPromptCallbacks : PromptCallbacks
 {
     private readonly Dictionary<string, string> _hashMarks;
     private readonly IReadOnlyDictionary<string, string> _globalMembers;
+    private readonly Dictionary<string, AnsiColor> _highlighting;
+
     private readonly ImmutableArray<CharacterSetModificationRule> _hasmarkRules;
     private readonly ImmutableArray<CharacterSetModificationRule> _functionRules;
     private readonly IMediator _mediator;
@@ -27,6 +29,32 @@ internal sealed class CliCalcPromptCallbacks : PromptCallbacks
         _hashMarks = commands.ToDictionary(x => x.Key.Substring(1), x => x.Value.Description);
         _hasmarkRules = new[] { new CharacterSetModificationRule(CharacterSetModificationKind.Remove, new[] { '#' }.ToImmutableArray()) }.ToImmutableArray();
         _functionRules = new[] { new CharacterSetModificationRule(CharacterSetModificationKind.Add, new[] { ' ' }.ToImmutableArray()) }.ToImmutableArray();
+
+        _highlighting = _globalMembers
+            .Where(x => x.Key.Contains('('))
+            .Select(x => x.Key.Substring(0, x.Key.IndexOf('(')))
+            .Distinct()
+            .ToDictionary(x => x, _ => AnsiColor.Cyan);
+        AddToHighLight(AnsiColor.Yellow, "+", "-", "*", "/", "%", "<", ">", "=", "~", "^", "|", "&", "?", ":");
+        AddToHighLight(AnsiColor.BrightGreen,
+                      "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked",
+                      "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else",
+                      "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for",
+                      "foreach", "goto", "if", "implicit", "int", "interface", "internal", "is", "lock",
+                      "long", "namespace", "new", "null", "object", "operator", "out", "override", "params",
+                      "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short",
+                      "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true",
+                      "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual",
+                      "void", "volatile", "var", "record", "while");
+
+    }
+
+    private void AddToHighLight(AnsiColor color, params string[] strs)
+    {
+        foreach (var str in strs)
+        {
+            _highlighting.Add(str, color);
+        }
     }
 
     protected override Task<IReadOnlyList<CompletionItem>> GetCompletionItemsAsync(string text,
@@ -47,6 +75,12 @@ internal sealed class CliCalcPromptCallbacks : PromptCallbacks
         return text.StartsWith('#')
             ? ItemsFromDictionary(typedWord, _hashMarks, _hasmarkRules)
             : ItemsFromDictionary(typedWord, _globalMembers, _functionRules);
+    }
+
+    protected override Task<IReadOnlyCollection<FormatSpan>> HighlightCallbackAsync(string text, CancellationToken cancellationToken)
+    {
+        IReadOnlyCollection<FormatSpan> spans = EnumerateFormatSpans(text).ToArray();
+        return Task.FromResult(spans);
     }
 
     private static Task<IReadOnlyList<CompletionItem>> ItemsFromDictionary(string typedWord,
@@ -70,5 +104,19 @@ internal sealed class CliCalcPromptCallbacks : PromptCallbacks
             .ToList();
 
         return Task.FromResult<IReadOnlyList<CompletionItem>>(list);
+    }
+
+    private IEnumerable<FormatSpan> EnumerateFormatSpans(string text)
+    {
+        foreach (var format in _highlighting)
+        {
+            int startIndex;
+            int offset = 0;
+            while ((startIndex = text.AsSpan(offset).IndexOf(format.Key)) != -1)
+            {
+                yield return new FormatSpan(offset + startIndex, format.Key.Length, format.Value);
+                offset += startIndex + format.Key.Length;
+            }
+        }
     }
 }

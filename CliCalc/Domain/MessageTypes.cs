@@ -13,6 +13,11 @@ internal sealed class MessageTypes
         public required CultureInfo CultureInfo { get; init; }
     }
 
+    public sealed class ChangeWorkdir
+    {
+        public required string Path { get; init; }
+    }
+
     public static class DataSets
     {
         public const string Variables = "Variables";
@@ -20,5 +25,6 @@ internal sealed class MessageTypes
         public const string GlobalDocumentation = "GlobalDocumentation";
         public const string HasmarksDocumentation = "HasmarksDocumentation";
         public const string AngleMode = "AngleMode";
+        public const string Workdir = "Workdir";
     }
 }

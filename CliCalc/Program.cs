@@ -13,6 +13,7 @@ Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 ConfigReader configReader = new();
 using var mediator = new Mediator();
+var state = new State(mediator);
 var hashMarkCommands = HashmarkCommandLoader.GetCommands();
 var globalDocumentationProvider = new GlobalDocumentationProvider(mediator, hashMarkCommands);
 
@@ -79,8 +80,10 @@ async Task ExecuteHashMark(string text, CancellationToken cancellationToken)
 
 FormattedString GetPrompt()
 {
-    var prompt = $"{presenter.Culture.ThreeLetterISOLanguageName} {engine.AngleMode} >";
+    var folder = state.Workdir;
+    var prompt = $"{folder}\r\n{presenter.Culture.ThreeLetterISOLanguageName} {engine.AngleMode} >";
     return new FormattedString(prompt,
-                               new FormatSpan(0, 3, AnsiColor.Magenta),
-                               new FormatSpan(3, 5, AnsiColor.Yellow));
+                               new FormatSpan(0, folder.Length, AnsiColor.BrightCyan),
+                               new FormatSpan(folder.Length+2, 3, AnsiColor.Magenta),
+                               new FormatSpan(folder.Length+5, 5, AnsiColor.Yellow));
 }

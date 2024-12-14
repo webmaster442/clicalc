@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Numerics;
-using System.Transactions;
 
 using CliCalc.Functions.Internals;
 
@@ -11,6 +10,17 @@ namespace CliCalc.Functions;
 /// </summary>
 public sealed class Global
 {
+    private readonly IReporter<long> _rerporter;
+
+    /// <summary>
+    /// Initializes a new instance of the Global class.
+    /// </summary>
+    /// <param name="rerporter">progress reporter for long running actions</param>
+    public Global(IReporter<long> rerporter)
+    {
+        _rerporter = rerporter;
+    }
+
     /// <summary>
     /// Represents the natural logarithmic base, specified by the constant, e.
     /// </summary>
@@ -605,4 +615,20 @@ public sealed class Global
     /// <returns>A sequence of double-precision floating-point numbers.</returns>
     public IEnumerable<double> Range(double start, int count, Func<double, double> next)
         => Doubles.Range(start, count, next);
+
+    /// <summary>
+    /// Create a new file object.
+    /// </summary>
+    /// <param name="path">The File path on the file system</param>
+    /// <returns>A file object</returns>
+    public File File(string path)
+        => new File(path);
+
+    /// <summary>
+    /// Computes the SHA1 hash of a file
+    /// </summary>
+    /// <param name="file">The file, whose hash value will be computed</param>
+    /// <returns>The Hash of the file</returns>
+    public HashValue Sha1(File file)
+        => HashCalculator.ComputeSha1(file, _rerporter);
 }

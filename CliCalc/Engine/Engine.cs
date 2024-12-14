@@ -25,12 +25,12 @@ internal sealed class Engine :
     private readonly Configuration _configuration;
     private ScriptState<object>? _scriptState;
 
-    public Engine(IMediator mediator, Configuration configuration)
+    public Engine(IMediator mediator, IReporter<long> reporter, Configuration configuration)
     {
         _mediator = mediator;
         _configuration = configuration;
         _mediator.Register(this);
-        _globalScope = new Global();
+        _globalScope = new Global(reporter);
         _scriptOptions = ScriptOptions.Default
             .WithLanguageVersion(Microsoft.CodeAnalysis.CSharp.LanguageVersion.Latest)
             .WithCheckOverflow(true)

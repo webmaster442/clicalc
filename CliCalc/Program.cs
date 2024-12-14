@@ -18,7 +18,7 @@ var globalDocumentationProvider = new GlobalDocumentationProvider(mediator, hash
 
 var programConfiguration = await configReader.ReadAsync();
 
-var engine = new Engine(mediator, programConfiguration);
+var engine = new Engine(mediator, new Reporter(AnsiConsole.Console), programConfiguration);
 var presenter = new ResultPresenter(mediator, AnsiConsole.Console, CultureInfo.CurrentUICulture);
 
 var promptConfiguration = new PromptConfiguration(prompt: GetPrompt(),

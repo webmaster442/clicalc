@@ -2,17 +2,36 @@
 
 internal static class Integers
 {
+    private static readonly HashSet<long> KnownPrimes =
+        [2, 3, 5, 7, 11,
+        13, 17, 19, 23, 29,
+        31, 37, 41, 43, 47,
+        53, 59, 61, 67, 71,
+        73, 79, 83, 89, 97];
+
     public static bool IsPrime(long number)
     {
-        if (number <= 1) return false;
-        if (number <= 3) return true;
-        if (number % 2 == 0 || number % 3 == 0) return false;
-
-        for (long i = 5; i * i <= number; i += 6)
+        checked
         {
-            if (number % i == 0 || number % (i + 2) == 0) return false;
+            if (number <= 1) return false;
+
+            if (KnownPrimes.Contains(number)) return true;
+
+            if (number <= 3) return true;
+            if (number % 2 == 0 || number % 3 == 0) return false;
+
+            foreach (var prime in KnownPrimes)
+            {
+                if (prime * prime > number) break;
+                if (number % prime == 0) return false;
+            }
+
+            for (long i = 5; i * i <= number; i += 6)
+            {
+                if (number % i == 0 || number % (i + 2) == 0) return false;
+            }
+            return true;
         }
-        return true;
     }
 
     public static Int128 Factorial(int number)

@@ -631,4 +631,36 @@ public sealed class Global
     /// <returns>The Hash of the file</returns>
     public HashValue Sha1(File file)
         => HashCalculator.ComputeSha1(file, _rerporter);
+
+    /// <summary>
+    /// Computes the SHA256 hash of a file
+    /// </summary>
+    /// <param name="file">The file, whose hash value will be computed</param>
+    /// <returns>The Hash of the file</returns>
+    public HashValue Sha256(File file)
+        => HashCalculator.ComputeSha256(file, _rerporter);
+
+    /// <summary>
+    /// Computes the SHA384 hash of a file
+    /// </summary>
+    /// <param name="file">The file, whose hash value will be computed</param>
+    /// <returns>The Hash of the file</returns>
+    public HashValue Sha384(File file)
+        => HashCalculator.ComputeSha384(file, _rerporter);
+
+    /// <summary>
+    /// Computes the SHA512 hash of a file
+    /// </summary>
+    /// <param name="file">The file, whose hash value will be computed</param>
+    /// <returns>The Hash of the file</returns>
+    public HashValue Sha512(File file)
+        => HashCalculator.ComputeSha512(file, _rerporter);
+
+    /// <summary>
+    /// Computes the Md5 hash of a file
+    /// </summary>
+    /// <param name="file">The file, whose hash value will be computed</param>
+    /// <returns>The Hash of the file</returns>
+    public HashValue Md5(File file)
+        => HashCalculator.ComputeMd5(file, _rerporter);
 }

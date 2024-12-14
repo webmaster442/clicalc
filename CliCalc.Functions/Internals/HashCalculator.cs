@@ -12,6 +12,30 @@ internal static class HashCalculator
         return ComputeHashCore(input, sha1, processed);
     }
 
+    public static HashValue ComputeSha256(File input, IReporter<long> processed)
+    {
+        using var sha256 = SHA256.Create();
+        return ComputeHashCore(input, sha256, processed);
+    }
+
+    public static HashValue ComputeSha384(File input, IReporter<long> processed)
+    {
+        using var sha384 = SHA384.Create();
+        return ComputeHashCore(input, sha384, processed);
+    }
+
+    public static HashValue ComputeSha512(File input, IReporter<long> processed)
+    {
+        using var sha512 = SHA512.Create();
+        return ComputeHashCore(input, sha512, processed);
+    }
+
+    public static HashValue ComputeMd5(File input, IReporter<long> processed)
+    {
+        using var md5 = MD5.Create();
+        return ComputeHashCore(input, md5, processed);
+    }
+
     private static HashValue ComputeHashCore(File input, HashAlgorithm algorithm, IReporter<long> processed)
     {
         using var stream = input.OpenRead();

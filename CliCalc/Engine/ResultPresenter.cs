@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Numerics;
 using System.Reflection;
@@ -90,7 +91,7 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
         {
             _console.MarkupLine($"[bold green]{formatted.EscapeMarkup()}[/]");
         }
-        else if (obj is IEnumerable<IFormattable> enumerable)
+        else if (obj is IEnumerable enumerable)
         {
             int index = 0;
             foreach (var item in enumerable)

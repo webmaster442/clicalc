@@ -54,4 +54,14 @@ internal static class Doubles
         }
         return significand == 1;
     }
+
+    public static IEnumerable<double> Range(double start, int count, Func<double, double> next)
+    {
+        double current = start;
+        for (int i = 0; i < count; i++)
+        {
+            yield return current;
+            current = next(current);
+        }
+    }
 }

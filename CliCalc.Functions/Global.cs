@@ -595,4 +595,14 @@ public sealed class Global
     /// </summary>
     /// <returns>A Guid</returns>
     public Guid GuidV7() => Guids.V7();
+
+    /// <summary>
+    /// Generate a sequence of double-precision floating-point numbers.
+    /// </summary>
+    /// <param name="start">start value</param>
+    /// <param name="count">sequence lenght</param>
+    /// <param name="next">a function to compute the next value.</param>
+    /// <returns>A sequence of double-precision floating-point numbers.</returns>
+    public IEnumerable<double> Range(double start, int count, Func<double, double> next)
+        => Doubles.Range(start, count, next);
 }

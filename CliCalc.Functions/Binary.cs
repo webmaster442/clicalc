@@ -39,7 +39,7 @@ public sealed class Binary : IReadOnlyList<byte>
     /// <summary>
     /// Returns the byte array.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The underlying Byte array</returns>
     public byte[] AsArray()
     {
         return _data;

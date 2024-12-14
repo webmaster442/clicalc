@@ -17,7 +17,7 @@ public class CalculatorTests
     public void GlobalSetup()
     {
         _mediator = new Mediator();
-        _engine = new Engine.Engine(_mediator);
+        _engine = new Engine.Engine(_mediator, new Domain.Configuration());
     }
 
     [OneTimeTearDown]

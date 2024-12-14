@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Numerics;
+using System.Transactions;
 
 using CliCalc.Functions.Internals;
 
@@ -19,6 +20,86 @@ public sealed class Global
     /// Represents the ratio of the circumference of a circle to its diameter, specified by the constant, π.
     /// </summary>
     public double Pi => Math.PI;
+
+    /// <summary>
+    /// Represents the SI prefix deca, which is 10^1.
+    /// </summary>
+    public double Deca => 10;
+
+    /// <summary>
+    /// Represents the SI prefix hecto, which is 10^2.
+    /// </summary>
+    public double Hecto => 100;
+
+    /// <summary>
+    /// Represents the SI prefix kilo, which is 10^3.
+    /// </summary>
+    public double Kilo => 1000;
+
+    /// <summary>
+    /// Represents the SI prefix mega, which is 10^6.
+    /// </summary>
+    public double Mega => 1E6;
+
+    /// <summary>
+    /// Represents the SI prefix giga, which is 10^9.
+    /// </summary>
+    public double Giga => 1E9;
+
+    /// <summary>
+    /// Represents the SI prefix tera, which is 10^12.
+    /// </summary>
+    public double Tera => 1E12;
+
+    /// <summary>
+    /// Represent the SI prefix peta, which is 10^15.
+    /// </summary>
+    public double Peta => 1E15;
+
+    /// <summary>
+    /// Represents the SI prefix exa, which is 10^18.
+    /// </summary>
+    public double Exa => 1E18;
+
+    /// <summary>
+    /// Represents the SI prefix deci, which is 10^-1.
+    /// </summary>
+    public double Deci => 0.1;
+
+    /// <summary>
+    /// Represents the SI prefix centi, which is 10^-2.
+    /// </summary>
+    public double Centi => 0.01;
+
+    /// <summary>
+    /// Represents the SI prefix milli, which is 10^-3.
+    /// </summary>
+    public double Milli => 0.001;
+
+    /// <summary>
+    /// Represents the SI prefix micro, which is 10^-6.
+    /// </summary>
+    public double Micro => 1E-6;
+
+    /// <summary>
+    /// Represents the SI prefix nano, which is 10^-9.
+    /// </summary>
+    public double Nano => 1E-9;
+
+    /// <summary>
+    /// Represents the SI prefix pico, which is 10^-12.
+    /// </summary>
+    public double Pico => 1E-12;
+
+    /// <summary>
+    /// Represents the SI prefix femto, which is 10^-15.
+    /// </summary>
+    public double Femto => 1E-15;
+
+    /// <summary>
+    /// Represents the SI prefix atto, which is 10^-18.
+    /// </summary>
+    public double Atto => 1E-18;
 
     internal AngleMode Mode { get; set; }
 
@@ -496,4 +577,22 @@ public sealed class Global
     /// <returns>true, if the number can be represented exactly in the double type, false if it can be represented with rounding errors</returns>
     public bool CanBeExactlyRepresented(float number)
         => Doubles.IsExact(number);
+
+    /// <summary>
+    /// Create a Version 1 type Globaly Unique Identifier (GUID).
+    /// </summary>
+    /// <returns>A Guid</returns>
+    public Guid GuidV1() => Guids.V1();
+
+    /// <summary>
+    /// Create a Version 4 type Globaly Unique Identifier (GUID).
+    /// </summary>
+    /// <returns>A Guid</returns>
+    public Guid GuidV4() => Guids.V4();
+
+    /// <summary>
+    /// Create a Version 7 type Globaly Unique Identifier (GUID).
+    /// </summary>
+    /// <returns>A Guid</returns>
+    public Guid GuidV7() => Guids.V7();
 }

@@ -14,12 +14,12 @@ internal sealed class Cd : IHashMarkCommand
 
     public Task<HashMarkResult> ExecuteAsync(Arguments args, IAnsiConsole ansiConsole, IMediator mediator, CancellationToken cancellationToken)
     {
+        string currentDirectory = mediator.Request<string>(MessageTypes.DataSets.Workdir);
+
         if (args.Count == 0)
         {
-            return Task.FromResult(new HashMarkResult("No directory specified"));
+            return Task.FromResult(new HashMarkResult(currentDirectory));
         }
-
-        string currentDirectory = mediator.Request<string>(MessageTypes.DataSets.Workdir);
 
         if (args[0] == "..")
         {

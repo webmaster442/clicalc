@@ -17,8 +17,11 @@ internal static partial class XmlDocExtensions
         { "System.Int128", "Int128" },
         { "System.DateTime", "DateTime" },
         { "System.TimeSpan", "TimeSpan" },
+        { "System.String", "string" },
         { "System.Numerics.Complex", "Complex" },
-        { "System.Guid", "Guid" }
+        { "System.Guid", "Guid" },
+        { "CliCalc.Functions.File", "File"  }
+
     };
 
     [GeneratedRegex(@"^(M|P)(\:CliCalc\.Functions\.Global\.)(.+)$")]

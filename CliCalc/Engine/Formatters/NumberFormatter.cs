@@ -56,7 +56,7 @@ internal sealed class NumberFormatter : IObjectFormatter
 
     public static string FormatFloat(IFormattable formattable, CultureInfo culture)
     {
-        return formattable.ToString("N14", culture)
+        return formattable.ToString("N18", culture)
             .TrimEnd('0')
             .TrimEnd(culture.NumberFormat.NumberDecimalSeparator[0]);
     }

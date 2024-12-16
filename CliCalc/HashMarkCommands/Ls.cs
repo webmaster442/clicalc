@@ -18,14 +18,12 @@ internal sealed class Ls : IHashMarkCommand
         var directories = Directory.GetDirectories(currentDirectory).Select(x => Path.GetFileName(x));
         var files = Directory.GetFiles(currentDirectory).Select(x => Path.GetFileName(x));
 
-        ansiConsole.MarkupLine($"[bold]Directories:[/]");
+        ansiConsole.MarkupLine($"[green]{currentDirectory.EscapeMarkup()}[/]");
+        ansiConsole.WriteLine();
         foreach (var directory in directories)
         {
             ansiConsole.MarkupLine($"  [cyan]{directory.EscapeMarkup()}[/]");
         }
-
-        ansiConsole.WriteLine();
-        ansiConsole.MarkupLine($"[bold]Files:[/]");
         foreach (var file in files)
         {
             ansiConsole.MarkupLine($"  [yellow]{file.EscapeMarkup()}[/]");

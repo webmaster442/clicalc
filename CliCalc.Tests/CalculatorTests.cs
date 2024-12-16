@@ -1,6 +1,9 @@
 using System.Globalization;
 
 using CliCalc.Engine;
+using CliCalc.Functions;
+
+using NSubstitute;
 
 using Spectre.Console.Testing;
 
@@ -13,11 +16,14 @@ public class CalculatorTests
     private ResultPresenter _presenter;
     private TestConsole _console;
 
+    private IReporter<long> _reporter;
+
     [OneTimeSetUp]
     public void GlobalSetup()
     {
+        _reporter = Substitute.For<IReporter<long>>();
         _mediator = new Mediator();
-        _engine = new Engine.Engine(_mediator, new Domain.Configuration());
+        _engine = new Engine.Engine(_mediator, _reporter, new Domain.Configuration());
     }
 
     [OneTimeTearDown]

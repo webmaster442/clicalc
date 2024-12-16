@@ -80,10 +80,14 @@ async Task ExecuteHashMark(string text, CancellationToken cancellationToken)
 
 FormattedString GetPrompt()
 {
-    var folder = state.Workdir;
-    var prompt = $"{folder}\r\n{presenter.Culture.ThreeLetterISOLanguageName} {engine.AngleMode} >";
+    var folder = Path.GetFileName(state.Workdir);
+    if (string.IsNullOrEmpty(folder))
+        folder = state.Workdir;
+
+    var folderPath = $"(Dir: {folder})";
+    var prompt = $"{folderPath} {presenter.Culture.ThreeLetterISOLanguageName} {engine.AngleMode} >";
     return new FormattedString(prompt,
-                               new FormatSpan(0, folder.Length, AnsiColor.BrightCyan),
-                               new FormatSpan(folder.Length+2, 3, AnsiColor.Magenta),
-                               new FormatSpan(folder.Length+5, 5, AnsiColor.Yellow));
+                               new FormatSpan(0, folderPath.Length, AnsiColor.BrightCyan),
+                               new FormatSpan(folderPath.Length+1, 3, AnsiColor.Magenta),
+                               new FormatSpan(folderPath.Length+4, 5, AnsiColor.Yellow));
 }

@@ -626,120 +626,216 @@ public sealed class Global
     /// <summary>
     /// Create a new file object.
     /// </summary>
-    /// <param name="path">The File path on the file system</param>
-    /// <returns>A file object</returns>
+    /// <param name="path">The File path on the file system.</param>
+    /// <returns>A file object.</returns>
     public File File(string path)
         => new File(path);
 
     /// <summary>
-    /// Computes the SHA1 hash of a file
+    /// Computes the SHA1 hash of a file.
     /// </summary>
-    /// <param name="file">The file, whose hash value will be computed</param>
-    /// <returns>The Hash of the file</returns>
+    /// <param name="file">The file, whose hash value will be computed.</param>
+    /// <returns>The Hash of the file.</returns>
     public HashValue Sha1(File file)
         => HashCalculator.ComputeSha1(file, _rerporter);
 
     /// <summary>
-    /// Computes the SHA1 hash of a string
+    /// Computes the SHA1 hash of a string.
     /// </summary>
-    /// <param name="str">The string, whose hash value will be computed</param>
-    /// <returns>The Hash of the sring</returns>
+    /// <param name="str">The string, whose hash value will be computed.</param>
+    /// <returns>The Hash of the sring.</returns>
     public HashValue Sha1(string str)
         => HashCalculator.ComputeSha1(str);
 
     /// <summary>
-    /// Computes the SHA256 hash of a file
+    /// Computes the SHA256 hash of a file.
     /// </summary>
-    /// <param name="file">The file, whose hash value will be computed</param>
-    /// <returns>The Hash of the file</returns>
+    /// <param name="file">The file, whose hash value will be computed.</param>
+    /// <returns>The Hash of the file.</returns>
     public HashValue Sha256(File file)
         => HashCalculator.ComputeSha256(file, _rerporter);
 
     /// <summary>
-    /// Computes the SHA256 hash of a string
+    /// Computes the SHA256 hash of a string.
     /// </summary>
-    /// <param name="str">The string, whose hash value will be computed</param>
-    /// <returns>The Hash of the sring</returns>
+    /// <param name="str">The string, whose hash value will be computed.</param>
+    /// <returns>The Hash of the sring.</returns>
     public HashValue Sha256(string str)
         => HashCalculator.ComputeSha256(str);
 
     /// <summary>
-    /// Computes the SHA384 hash of a file
+    /// Computes the SHA384 hash of a file.
     /// </summary>
-    /// <param name="file">The file, whose hash value will be computed</param>
-    /// <returns>The Hash of the file</returns>
+    /// <param name="file">The file, whose hash value will be computed.</param>
+    /// <returns>The Hash of the file.</returns>
     public HashValue Sha384(File file)
         => HashCalculator.ComputeSha384(file, _rerporter);
 
     /// <summary>
-    /// Computes the SHA384 hash of a string
+    /// Computes the SHA384 hash of a string.
     /// </summary>
-    /// <param name="str">The string, whose hash value will be computed</param>
-    /// <returns>The Hash of the sring</returns>
+    /// <param name="str">The string, whose hash value will be computed.</param>
+    /// <returns>The Hash of the sring.</returns>
     public HashValue Sha384(string str)
         => HashCalculator.ComputeSha384(str);
 
     /// <summary>
-    /// Computes the SHA512 hash of a file
+    /// Computes the SHA512 hash of a file.
     /// </summary>
-    /// <param name="file">The file, whose hash value will be computed</param>
-    /// <returns>The Hash of the file</returns>
+    /// <param name="file">The file, whose hash value will be computed.</param>
+    /// <returns>The Hash of the file.</returns>
     public HashValue Sha512(File file)
         => HashCalculator.ComputeSha512(file, _rerporter);
 
     /// <summary>
-    /// Computes the SHA512 hash of a string
+    /// Computes the SHA512 hash of a string.
     /// </summary>
-    /// <param name="str">The string, whose hash value will be computed</param>
-    /// <returns>The Hash of the sring</returns>
+    /// <param name="str">The string, whose hash value will be computed.</param>
+    /// <returns>The Hash of the sring.</returns>
     public HashValue Sha512(string str)
         => HashCalculator.ComputeSha512(str);
 
     /// <summary>
-    /// Computes the Md5 hash of a file
+    /// Computes the Md5 hash of a file.
     /// </summary>
-    /// <param name="file">The file, whose hash value will be computed</param>
-    /// <returns>The Hash of the file</returns>
+    /// <param name="file">The file, whose hash value will be computed.</param>
+    /// <returns>The Hash of the file.</returns>
     public HashValue Md5(File file)
         => HashCalculator.ComputeMd5(file, _rerporter);
 
     /// <summary>
-    /// Computes the Md5 hash of a string
+    /// Computes the Md5 hash of a string.
     /// </summary>
-    /// <param name="str">The string, whose hash value will be computed</param>
-    /// <returns>The Hash of the sring</returns>
+    /// <param name="str">The string, whose hash value will be computed.</param>
+    /// <returns>The Hash of the sring.</returns>
     public HashValue Md5(string str)
         => HashCalculator.ComputeMd5(str);
 
     /// <summary>
-    /// Computes the Crc32 hash of a file
+    /// Computes the Crc32 hash of a file.
     /// </summary>
-    /// <param name="file">The file, whose hash value will be computed</param>
-    /// <returns>The Hash of the file</returns>
+    /// <param name="file">The file, whose hash value will be computed.</param>
+    /// <returns>The Hash of the file.</returns>
     public HashValue Crc32(File file)
         => HashCalculator.ComputeCrc32(file, _rerporter);
 
     /// <summary>
-    /// Computes the Crc32 hash of a string
+    /// Computes the Crc32 hash of a string.
     /// </summary>
-    /// <param name="str">The string, whose hash value will be computed</param>
-    /// <returns>The Hash of the sring</returns>
+    /// <param name="str">The string, whose hash value will be computed.</param>
+    /// <returns>The Hash of the sring.</returns>
     public HashValue Crc32(string str)
         => HashCalculator.ComputeCrc32(str);
 
     /// <summary>
-    /// Computes the Crc64 hash of a file
+    /// Computes the Crc64 hash of a file.
     /// </summary>
-    /// <param name="file">The file, whose hash value will be computed</param>
-    /// <returns>The Hash of the file</returns>
+    /// <param name="file">The file, whose hash value will be computed.</param>
+    /// <returns>The Hash of the file.</returns>
     public HashValue Crc64(File file)
         => HashCalculator.ComputeCrc64(file, _rerporter);
 
     /// <summary>
-    /// Computes the Crc64 hash of a string
+    /// Computes the Crc64 hash of a string.
     /// </summary>
     /// <param name="str">The string, whose hash value will be computed</param>
     /// <returns>The Hash of the sring</returns>
     public HashValue Crc64(string str)
         => HashCalculator.ComputeCrc64(str);
+
+    /// <summary>
+    /// Returns the maximum value in the sample data. Returns NaN if data is empty or if any entry is NaN.
+    /// </summary>
+    /// <param name="data">The sample data.</param>
+    /// <returns>The maximum value in the sample data.</returns>
+    public double Maximum(params double[] data)
+        => MathNet.Numerics.Statistics.Statistics.Maximum(data);
+
+    /// <summary>
+    ///  Returns the maximum absolute value in the sample data. Returns NaN if data is empty or if any entry is NaN.
+    /// </summary>
+    /// <param name="data">The sample data.</param>
+    /// <returns>The maximum value in the sample data.</returns>
+    public double MaximumAbsolute(params double[] data)
+        => MathNet.Numerics.Statistics.Statistics.MaximumAbsolute(data);
+
+    /// <summary>
+    /// Returns the minimum value in the sample data. Returns NaN if data is empty or if any entry is NaN.
+    /// </summary>
+    /// <param name="data">The sample data.</param>
+    /// <returns>The minimum value in the sample data.</returns>
+    public double Minimum(params double[] data)
+        => MathNet.Numerics.Statistics.Statistics.Minimum(data);
+
+    /// <summary>
+    /// Returns the minimum absolute value in the sample data. Returns NaN if data is  empty or if any entry is NaN.
+    /// </summary>
+    /// <param name="data">The sample data.</param>
+    /// <returns>The minimum value in the sample data.</returns>
+    public double MinimumAbsolute(params double[] data)
+        => MathNet.Numerics.Statistics.Statistics.MinimumAbsolute(data);
+
+    /// <summary>
+    /// Evaluates the sample mean, an estimate of the population mean. Returns NaN if data is empty or if any entry is NaN.
+    /// </summary>
+    /// <param name="data"> The data to calculate the mean of.</param>
+    /// <returns>The mean of the sample.</returns>
+    public double Mean(params double[] data)
+        => MathNet.Numerics.Statistics.Statistics.Mean(data);
+
+    /// <summary>
+    /// Evaluates the geometric mean. Returns NaN if data is empty or if any entry is NaN.
+    /// </summary>
+    /// <param name="data">The data to calculate the geometric mean of.</param>
+    /// <returns>The geometric mean of the sample.</returns>
+    public double GeometricMean(params double[] data)
+        => MathNet.Numerics.Statistics.Statistics.GeometricMean(data);
+
+    /// <summary>
+    /// Evaluates the harmonic mean. Returns NaN if data is empty or if any entry is NaN.
+    /// </summary>
+    /// <param name="data">The data to calculate the harmonic mean of.</param>
+    /// <returns>The harmonic mean of the sample.</returns>
+    public double HarmonicMean(params double[] data)
+        => MathNet.Numerics.Statistics.Statistics.HarmonicMean(data);
+
+    /// <summary>
+    /// Evaluates the variance from the provided full population. On a dataset of size
+    /// N will use an N normalizer and would thus be biased if applied to a subset. Returns
+    /// NaN if data is empty or if any entry is NaN.
+    /// </summary>
+    /// <param name="data">The full population data.</param>
+    /// <returns>The variance of the data</returns>
+    public double Variance(params double[] data)
+        => MathNet.Numerics.Statistics.Statistics.PopulationVariance(data);
+
+    /// <summary>
+    /// Evaluates the standard deviation from the provided full population. On a dataset
+    /// of size N will use an N normalizer and would thus be biased if applied to a subset.
+    /// Returns NaN if data is empty or if any entry is NaN.
+    /// </summary>
+    /// <param name="data">The full population data.</param>
+    /// <returns>The Standard Deviation of the data</returns>
+    public double StandardDeviation(params double[] data)
+         => MathNet.Numerics.Statistics.Statistics.PopulationStandardDeviation(data);
+
+    /// <summary>
+    /// Evaluates the skewness from the full population. Does not use a normalizer and
+    /// would thus be biased if applied to a subset (type 1). Returns NaN if data has
+    /// less than two entries or if any entry is NaN.
+    /// </summary>
+    /// <param name="data">The full population data.</param>
+    /// <returns>The Skewness of the data</returns>
+    public double Skewness(params double[] data)
+        => MathNet.Numerics.Statistics.Statistics.PopulationSkewness(data);
+
+    /// <summary>
+    /// Approximation of the definite integral of an analytic smooth function on a closed interval.
+    /// </summary>
+    /// <param name="f">The function to integrate</param>
+    /// <param name="begin">Where the interval starts, inclusive and finite.</param>
+    /// <param name="end">Where the interval stops, inclusive and finite.</param>
+    /// <returns>Approximation of the finite integral in the given interval.</returns>
+    public double Integrate(Func<double, double> f, double begin, double end)
+        => MathNet.Numerics.Integrate.OnClosedInterval(f, begin, end, 1e-6);
 }

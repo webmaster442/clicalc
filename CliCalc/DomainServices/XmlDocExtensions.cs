@@ -20,8 +20,8 @@ internal static partial class XmlDocExtensions
         { "System.String", "string" },
         { "System.Numerics.Complex", "Complex" },
         { "System.Guid", "Guid" },
-        { "CliCalc.Functions.File", "File"  }
-
+        { "CliCalc.Functions.File", "File"  },
+        { "CliCalc.Functions.Fraction", "Fraction"  }
     };
 
     [GeneratedRegex(@"^(M|P)(\:CliCalc\.Functions\.Global\.)(.+)$")]

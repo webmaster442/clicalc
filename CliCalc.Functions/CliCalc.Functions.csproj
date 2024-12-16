@@ -11,5 +11,9 @@
   <ItemGroup>
     <InternalsVisibleTo Include="CliCalc" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Hashing" Version="9.0.0" />
+  </ItemGroup>
   
 </Project>

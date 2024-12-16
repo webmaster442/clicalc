@@ -135,6 +135,13 @@ public sealed class Global
     public double Abs(Complex x) => System.Numerics.Complex.Abs(x);
 
     /// <summary>
+    /// Returns the absolute value of a fraction.
+    /// </summary>
+    /// <param name="x">A fraction number</param>
+    /// <returns>The absolute value of the fraction</returns>
+    public Fraction Abs(Fraction x) => x.Numerator < 0 ? -x : x;
+
+    /// <summary>
     /// Calculates the arccosine (inverse cosine) of a specified number.
     /// The angle is returned in the unit of measure specified #mode command.
     /// </summary>
@@ -633,12 +640,28 @@ public sealed class Global
         => HashCalculator.ComputeSha1(file, _rerporter);
 
     /// <summary>
+    /// Computes the SHA1 hash of a string
+    /// </summary>
+    /// <param name="str">The string, whose hash value will be computed</param>
+    /// <returns>The Hash of the sring</returns>
+    public HashValue Sha1(string str)
+        => HashCalculator.ComputeSha1(str);
+
+    /// <summary>
     /// Computes the SHA256 hash of a file
     /// </summary>
     /// <param name="file">The file, whose hash value will be computed</param>
     /// <returns>The Hash of the file</returns>
     public HashValue Sha256(File file)
         => HashCalculator.ComputeSha256(file, _rerporter);
+
+    /// <summary>
+    /// Computes the SHA256 hash of a string
+    /// </summary>
+    /// <param name="str">The string, whose hash value will be computed</param>
+    /// <returns>The Hash of the sring</returns>
+    public HashValue Sha256(string str)
+        => HashCalculator.ComputeSha256(str);
 
     /// <summary>
     /// Computes the SHA384 hash of a file
@@ -649,6 +672,14 @@ public sealed class Global
         => HashCalculator.ComputeSha384(file, _rerporter);
 
     /// <summary>
+    /// Computes the SHA384 hash of a string
+    /// </summary>
+    /// <param name="str">The string, whose hash value will be computed</param>
+    /// <returns>The Hash of the sring</returns>
+    public HashValue Sha384(string str)
+        => HashCalculator.ComputeSha384(str);
+
+    /// <summary>
     /// Computes the SHA512 hash of a file
     /// </summary>
     /// <param name="file">The file, whose hash value will be computed</param>
@@ -657,10 +688,58 @@ public sealed class Global
         => HashCalculator.ComputeSha512(file, _rerporter);
 
     /// <summary>
+    /// Computes the SHA512 hash of a string
+    /// </summary>
+    /// <param name="str">The string, whose hash value will be computed</param>
+    /// <returns>The Hash of the sring</returns>
+    public HashValue Sha512(string str)
+        => HashCalculator.ComputeSha512(str);
+
+    /// <summary>
     /// Computes the Md5 hash of a file
     /// </summary>
     /// <param name="file">The file, whose hash value will be computed</param>
     /// <returns>The Hash of the file</returns>
     public HashValue Md5(File file)
         => HashCalculator.ComputeMd5(file, _rerporter);
+
+    /// <summary>
+    /// Computes the Md5 hash of a string
+    /// </summary>
+    /// <param name="str">The string, whose hash value will be computed</param>
+    /// <returns>The Hash of the sring</returns>
+    public HashValue Md5(string str)
+        => HashCalculator.ComputeMd5(str);
+
+    /// <summary>
+    /// Computes the Crc32 hash of a file
+    /// </summary>
+    /// <param name="file">The file, whose hash value will be computed</param>
+    /// <returns>The Hash of the file</returns>
+    public HashValue Crc32(File file)
+        => HashCalculator.ComputeCrc32(file, _rerporter);
+
+    /// <summary>
+    /// Computes the Crc32 hash of a string
+    /// </summary>
+    /// <param name="str">The string, whose hash value will be computed</param>
+    /// <returns>The Hash of the sring</returns>
+    public HashValue Crc32(string str)
+        => HashCalculator.ComputeCrc32(str);
+
+    /// <summary>
+    /// Computes the Crc64 hash of a file
+    /// </summary>
+    /// <param name="file">The file, whose hash value will be computed</param>
+    /// <returns>The Hash of the file</returns>
+    public HashValue Crc64(File file)
+        => HashCalculator.ComputeCrc64(file, _rerporter);
+
+    /// <summary>
+    /// Computes the Crc64 hash of a string
+    /// </summary>
+    /// <param name="str">The string, whose hash value will be computed</param>
+    /// <returns>The Hash of the sring</returns>
+    public HashValue Crc64(string str)
+        => HashCalculator.ComputeCrc64(str);
 }

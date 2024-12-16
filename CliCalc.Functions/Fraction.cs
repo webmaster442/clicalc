@@ -3,12 +3,14 @@ using System.Globalization;
 using System.Numerics;
 using System.Text;
 
-namespace CliCalc.Functions.Internals;
+using CliCalc.Functions.Internals;
+
+namespace CliCalc.Functions;
 
 /// <summary>
 /// Represents a fractional number.
 /// </summary>
-public readonly struct Fraction:
+public readonly struct Fraction :
     IEquatable<Fraction>,
     IComparable<Fraction>,
     IParsable<Fraction>,
@@ -106,7 +108,7 @@ public readonly struct Fraction:
         long lcm = Integers.Lcm(left.Denominator, right.Denominator);
         long factorLeft = lcm / left.Denominator;
         long factorRigt = lcm / right.Denominator;
-        long numerator = (left.Numerator * factorLeft) - (right.Numerator * factorRigt);
+        long numerator = left.Numerator * factorLeft - right.Numerator * factorRigt;
         return new Fraction(numerator, lcm);
     }
 
@@ -132,8 +134,8 @@ public readonly struct Fraction:
     public static Fraction operator %(Fraction left, Fraction right)
     {
         long lcm = Integers.Lcm(left.Denominator, right.Denominator);
-        long numerator1 = (lcm / left.Denominator) * left.Numerator;
-        long numerator2 = (lcm / right.Denominator) * right.Numerator;
+        long numerator1 = lcm / left.Denominator * left.Numerator;
+        long numerator2 = lcm / right.Denominator * right.Numerator;
         return new Fraction(numerator1 % numerator2, lcm);
     }
 
@@ -159,7 +161,7 @@ public readonly struct Fraction:
         long lcm = Integers.Lcm(left.Denominator, right.Denominator);
         long factorLeft = lcm / left.Denominator;
         long factorRigt = lcm / right.Denominator;
-        long numerator = (left.Numerator * factorLeft) + (right.Numerator * factorRigt);
+        long numerator = left.Numerator * factorLeft + right.Numerator * factorRigt;
         return new Fraction(numerator, lcm);
     }
 

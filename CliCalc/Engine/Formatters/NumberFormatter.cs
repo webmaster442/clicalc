@@ -2,7 +2,6 @@
 using System.Globalization;
 
 using CliCalc.Functions;
-using CliCalc.Functions.Internals;
 using CliCalc.Interfaces;
 
 namespace CliCalc.Engine.Formatters;

@@ -1,7 +1,6 @@
 ﻿namespace CliCalc.Interfaces;
 
-internal interface IRequestable<out T> : IMediatable
+internal interface IRequestable<out T> : IRequestableBase
 {
-    bool CanServe(string dataSetName);
     T OnRequest(string dataSet);
 }

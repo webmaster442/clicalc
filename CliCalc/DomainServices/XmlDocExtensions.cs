@@ -24,10 +24,10 @@ internal static partial class XmlDocExtensions
         { "CliCalc.Functions.Fraction", "Fraction"  }
     };
 
-    [GeneratedRegex(@"^(M|P)(\:CliCalc\.Functions\.Global\.)(.+)$")]
+    [GeneratedRegex(@"^(M|P)(\:CliCalc\.Functions\.Global\.)(.+)$", RegexOptions.None, 2000)]
     private static partial Regex MethodNameRegex();
 
-    [GeneratedRegex(@"\s\s")]
+    [GeneratedRegex(@"\s\s", RegexOptions.None, 2000)]
     private static partial Regex RemoveWhiteSpaces();
 
     public static bool IsMethod(this DocMember member)

@@ -17,7 +17,7 @@ internal static class Trigonometry
             AngleMode.Grad => GradToRad(angle),
             _ => angle
         };
-        return Math.Sin(rad);
+        return Math.Round(Math.Sin(rad), 8);
     }
 
     public static double Cos(double angle, AngleMode mode)
@@ -28,7 +28,7 @@ internal static class Trigonometry
             AngleMode.Grad => GradToRad(angle),
             _ => angle
         };
-        return Math.Cos(rad);
+        return Math.Round(Math.Cos(rad), 8);
     }
 
     public static double Tan(double angle, AngleMode mode)
@@ -39,7 +39,7 @@ internal static class Trigonometry
             AngleMode.Grad => GradToRad(angle),
             _ => angle
         };
-        return Math.Tan(rad);
+        return Math.Round(Math.Tan(rad), 8);
     }
 
     public static double Asin(double x, AngleMode mode)

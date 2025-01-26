@@ -40,10 +40,11 @@ public class CalculatorTests
     }
 
     [SetUp]
-    public void TestSetup()
+    public async Task TestSetup()
     {
         _console = new TestConsole();
         _presenter = new ResultPresenter(_mediator, _console, new CultureInfo("en-us"));
+        await _engine.InitializeAsync();
     }
 
     [TestCaseSource(typeof(TestCases), nameof(TestCases.Expressions))]

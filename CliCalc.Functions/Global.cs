@@ -121,6 +121,13 @@ public sealed class Global
     public double Abs(double x) => Math.Abs(x);
 
     /// <summary>
+    /// Returns the absolute value of an int number.
+    /// </summary>
+    /// <param name="x">A number that is greater than or equal to int.MinValue, but less than or equal to int.MaxValue.</param>
+    /// <returns>An 32 bit signed number, x, such that 0 ≤ x ≤ int.MaxValue.</returns>
+    public double Abs(int x) => Math.Abs(x);
+
+    /// <summary>
     /// Returns the absolute value of an Int128 number.
     /// </summary>
     /// <param name="x">A number that is greater than or equal to Int128.MinValue, but less than or equal to Int128.MaxValue</param>

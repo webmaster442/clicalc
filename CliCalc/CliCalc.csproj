@@ -20,7 +20,14 @@
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>dotnet;cli;calculator;calc;script</PackageTags>
+    <ApplicationIcon>..\Brand\Icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\Brand\192x192.png" Link="192x192.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
     <ItemGroup>
         <InternalsVisibleTo Include="CliCalc.Tests" />

@@ -53,6 +53,10 @@ internal class InstallCommand : IHashMarkCommand
 #endif
                     CommandLine = Path.Combine(AppContext.BaseDirectory, "CliCalc.exe"),
                     StartingDirectory = EnvironmentVariables.UserProfile,
+                    Icon = Path.Combine(AppContext.BaseDirectory, "192x192.png"),
+                    UseAcrylic = true,
+                    Hidden = false,
+                    ColorScheme = TerminalSchemes.TangoDark,
                 }
             }
         };

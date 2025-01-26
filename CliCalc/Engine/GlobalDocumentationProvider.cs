@@ -26,7 +26,7 @@ internal class GlobalDocumentationProvider : IRequestable<IReadOnlyDictionary<st
         _hashMarkCommands = hashMarkCommands;
     }
 
-    bool IRequestable<IReadOnlyDictionary<string, string>>.CanServe(string dataSetName)
+    bool IRequestableBase.CanServe(string dataSetName)
         => dataSetName == MessageTypes.DataSets.GlobalDocumentation
         || dataSetName == MessageTypes.DataSets.HasmarksDocumentation;
 

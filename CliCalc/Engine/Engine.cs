@@ -10,6 +10,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 
+using Webmaster442.WindowsTerminal;
+
 namespace CliCalc.Engine;
 
 internal sealed class Engine : 
@@ -41,7 +43,7 @@ internal sealed class Engine :
     public AngleMode AngleMode
         => _globalScope.Mode;
 
-    public async Task Initialize()
+    public async Task InitializeAsync()
     {
         StringBuilder statements = new StringBuilder();
         foreach (var constant in _configuration.Constants)
@@ -78,7 +80,7 @@ internal sealed class Engine :
     public async Task Reset()
     {
         _scriptState = null;
-        await Initialize();
+        await InitializeAsync();
         _globalScope.Mode = AngleMode.Deg;
     }
 
@@ -86,22 +88,21 @@ internal sealed class Engine :
         => await Reset();
 
     void INotifyable<MessageTypes.ExitMessage>.OnNotify(MessageTypes.ExitMessage message)
-        => Environment.Exit(0);
+    {
+        WindowsTerminal.SetProgressbar(ProgressbarState.Hidden, 0);
+        Environment.Exit(0);
+    }
 
-    bool IRequestable<IEnumerable<string>>.CanServe(string dataSetName)
-        => dataSetName == MessageTypes.DataSets.Variables;
+    bool IRequestableBase.CanServe(string dataSetName)
+        => dataSetName == MessageTypes.DataSets.Variables
+        || dataSetName == MessageTypes.DataSets.VariablesWithTypes
+        || dataSetName == MessageTypes.DataSets.AngleMode;
 
     IEnumerable<string> IRequestable<IEnumerable<string>>.OnRequest(string dataSet)
         => _scriptState != null ? _scriptState.Variables.Select(x => x.Name) : [];
 
-    bool IRequestable<IEnumerable<(string name, string typeName)>>.CanServe(string dataSetName)
-        => dataSetName == MessageTypes.DataSets.VariablesWithTypes;
-
     IEnumerable<(string name, string typeName)> IRequestable<IEnumerable<(string name, string typeName)>>.OnRequest(string dataSet)
         => _scriptState != null ? _scriptState.Variables.Select(x => (x.Name, x.Type.Name)) : [];
-
-    bool IRequestable<AngleMode>.CanServe(string dataSetName)
-        => dataSetName == MessageTypes.DataSets.AngleMode;
 
     AngleMode IRequestable<AngleMode>.OnRequest(string dataSet)
         => _globalScope.Mode;

@@ -22,7 +22,7 @@ internal sealed class State
         Workdir = message.Path;
     }
 
-    bool IRequestable<string>.CanServe(string dataSetName)
+    bool IRequestableBase.CanServe(string dataSetName)
         => dataSetName == MessageTypes.DataSets.Workdir;
 
     string IRequestable<string>.OnRequest(string dataSet)

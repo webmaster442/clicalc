@@ -4,6 +4,7 @@ using CliCalc;
 using CliCalc.Engine;
 using CliCalc.Infrastructure;
 
+using Webmaster442.WindowsTerminal;
 using PrettyPrompt;
 using PrettyPrompt.Highlighting;
 
@@ -40,42 +41,53 @@ AnsiConsole.MarkupLine("""
 
 using ConsoleCancellationTokenSource cts = new();
 
-await engine.Initialize();
+await engine.InitializeAsync();
 
 while (true)
 {
-    var response = await prompt.ReadLineAsync().ConfigureAwait(false);
+    WindowsTerminal.ShellIntegration.StartOfPrompt();
+    promptConfiguration.Prompt = GetPrompt();
+    WindowsTerminal.ShellIntegration.CommandStart();
+    PromptResult response = await prompt.ReadLineAsync().ConfigureAwait(false);
     if (response.IsSuccess)
     {
+        int exitCode = 0;
+        WindowsTerminal.ShellIntegration.CommandExecuted();
+        WindowsTerminal.SetProgressbar(ProgressbarState.Indeterminate, 0);
         if (response.Text.StartsWith('#'))
         {
-            await ExecuteHashMark(response.Text, cts.Token).ConfigureAwait(false);
+            exitCode = await ExecuteHashMark(response.Text, cts.Token).ConfigureAwait(false);
         }
         else
         {
-            var result = await engine.Evaluate(response.Text, cts.Token).ConfigureAwait(false);
+            CliCalc.Domain.Result result = await engine.Evaluate(response.Text, cts.Token).ConfigureAwait(false);
             presenter.Display(result);
+            exitCode = result.IsScuccess ? 0 : 1;
         }
+        WindowsTerminal.SetProgressbar(ProgressbarState.Hidden, 0);
+        WindowsTerminal.ShellIntegration.CommandFinished(exitCode);
     }
 }
 
-async Task ExecuteHashMark(string text, CancellationToken cancellationToken)
+async Task<int> ExecuteHashMark(string text, CancellationToken cancellationToken)
 {
     var args = new Arguments(text);
-
+    int exitCode = 0;
     if (hashMarkCommands.TryGetValue(args.CommandName, out CliCalc.Interfaces.IHashMarkCommand? value))
     {
         var result = await value.ExecuteAsync(args, AnsiConsole.Console, mediator, cancellationToken);
         if (!result.Success)
         {
             AnsiConsole.MarkupLine($"[red bold]{result.Content}[/]");
+            exitCode = 1;
         }
     }
     else
     {
         AnsiConsole.MarkupLine($"[red bold]Unknown command: {text}[/]");
+        exitCode = 2;
     }
-    promptConfiguration.Prompt = GetPrompt();
+    return exitCode;
 }
 
 FormattedString GetPrompt()
@@ -86,6 +98,7 @@ FormattedString GetPrompt()
 
     var folderPath = $"(Dir: {folder})";
     var prompt = $"{folderPath} {presenter.Culture.ThreeLetterISOLanguageName} {engine.AngleMode} >";
+
     return new FormattedString(prompt,
                                new FormatSpan(0, folderPath.Length, AnsiColor.BrightCyan),
                                new FormatSpan(folderPath.Length+1, 3, AnsiColor.Magenta),

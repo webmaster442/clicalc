@@ -4,13 +4,14 @@ internal sealed class Result
 {
     private readonly object? _value;
     private readonly Exception? _exception;
-    private readonly bool _isScuccess;
+
+    public bool IsScuccess { get; private set; }
 
     private Result(object? value, Exception? ex, bool isScuccess)
     {
         _value = value;
         _exception = ex;
-        _isScuccess = isScuccess;
+        IsScuccess = isScuccess;
     }
 
     public static Result Success(object value) => new(value, null, true);
@@ -19,7 +20,7 @@ internal sealed class Result
 
     public void Handle(Action<object?> onSuccess, Action<Exception> onFailure)
     {
-        if (_isScuccess)
+        if (IsScuccess)
         {
             onSuccess(_value);
         }

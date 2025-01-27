@@ -1,4 +1,9 @@
-﻿using System.Collections.Immutable;
+﻿// --------------------------------------------------------------------------
+// Copyright (c) 2024-2025 Ruzsinszki Gábor
+// This code is licensed under MIT license (see LICENSE for details)
+// --------------------------------------------------------------------------
+
+using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 
 using CliCalc.Domain;

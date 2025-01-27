@@ -1,4 +1,9 @@
-﻿namespace CliCalc.Functions;
+﻿// --------------------------------------------------------------------------
+// Copyright (c) 2024-2025 Ruzsinszki Gábor
+// This code is licensed under MIT license (see LICENSE for details)
+// --------------------------------------------------------------------------
+
+namespace CliCalc.Functions;
 
 /// <summary>
 /// Represents a file on the file system.

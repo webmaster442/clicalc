@@ -1,4 +1,9 @@
-﻿using System.IO.Hashing;
+﻿// --------------------------------------------------------------------------
+// Copyright (c) 2024-2025 Ruzsinszki Gábor
+// This code is licensed under MIT license (see LICENSE for details)
+// --------------------------------------------------------------------------
+
+using System.IO.Hashing;
 using System.Security.Cryptography;
 
 namespace CliCalc.Functions.Internals;

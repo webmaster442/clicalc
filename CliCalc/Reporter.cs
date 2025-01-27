@@ -7,6 +7,8 @@ using CliCalc.Functions;
 
 using Spectre.Console;
 
+using Webmaster442.WindowsTerminal;
+
 namespace CliCalc;
 internal class Reporter : IReporter<long>
 {
@@ -17,25 +19,14 @@ internal class Reporter : IReporter<long>
 
     public Reporter(IAnsiConsole ansiConsole)
     {
-        HideTerminalProgress();
+        WindowsTerminal.SetProgressbar(ProgressbarState.Hidden, 0);
         _ansiConsole = ansiConsole;
-    }
-
-    private void ReportToTerminal(int percent)
-    {
-        Console.Write($"\e]9;4;1;{percent}\x07");
-
-    }
-
-    private void HideTerminalProgress()
-    {
-        Console.Write("\e]9;4;0;0\x07");
     }
 
     public void Done()
     {
-        HideTerminalProgress();
-        _ansiConsole.Write("\e[?1049l"); // Switch back to the normal screen
+        WindowsTerminal.SetProgressbar(ProgressbarState.Hidden, 0);
+        WindowsTerminal.SwitchToMainBuffer();
     }
 
     public void ReportCrurrent(long value)
@@ -46,7 +37,7 @@ internal class Reporter : IReporter<long>
             return;
         }
         _lastReported = percent;
-        ReportToTerminal(percent);
+        WindowsTerminal.SetProgressbar(ProgressbarState.Default, percent);
         int max = Console.WindowWidth;
         int count = (int)(max * value / _max);
         _ansiConsole.Write(new string('█', count));
@@ -56,8 +47,8 @@ internal class Reporter : IReporter<long>
     public void Start(long value)
     {
         _max = value;
-        ReportToTerminal(0);
-        Console.Write("\e[?1049h"); // Switch to alternate screen
+        WindowsTerminal.SetProgressbar(ProgressbarState.Default, 0);
+        WindowsTerminal.SwitchToAlternateBuffer();
         _ansiConsole.Clear();
     }
 #pragma warning restore Spectre1000 // Use AnsiConsole instead of System.Console

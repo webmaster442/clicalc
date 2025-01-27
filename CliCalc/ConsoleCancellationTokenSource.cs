@@ -3,13 +3,8 @@
 // This code is licensed under MIT license (see LICENSE for details)
 // --------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace CliCalc;
+
 internal sealed class ConsoleCancellationTokenSource : IDisposable
 {
     private CancellationTokenSource? _tokenSource;

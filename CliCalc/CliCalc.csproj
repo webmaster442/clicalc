@@ -12,7 +12,7 @@
     <Authors>Webmaster442</Authors>
     <Description>clicalc is a simple console calculator based on C# script</Description>
     <PackageId>clicalc</PackageId>
-    <Version>1.0.0</Version>
+    <Version>$([System.DateTime]::UtcNow.ToString("yyyy")).$([System.DateTime]::UtcNow.ToString("MM")).$([System.DateTime]::UtcNow.ToString("dd")).0</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <PackageProjectUrl>https://github.com/webmaster442/csproj</PackageProjectUrl>

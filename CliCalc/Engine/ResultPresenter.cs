@@ -6,7 +6,6 @@
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Numerics;
 using System.Reflection;
 
 using CliCalc.Domain;
@@ -16,7 +15,6 @@ using CliCalc.Functions;
 using CliCalc.Interfaces;
 
 using Spectre.Console;
-using Spectre.Console.Rendering;
 
 namespace CliCalc.Engine;
 
@@ -52,16 +50,15 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
         result.Handle(Success, Failure);
     }
 
-    private bool TryRender(object obj, AngleMode angleMode, [NotNullWhen(true)] out IRenderable? renderable)
+    private bool TryRender(object obj, AngleMode angleMode, IAnsiConsole console)
     {
         foreach (var renderer in _renderers)
         {
-            if (renderer.TryRender(obj, Culture, angleMode, out renderable))
+            if (renderer.TryRender(obj, Culture, angleMode, console))
             {
                 return true;
             }
         }
-        renderable = null;
         return false;
     }
 
@@ -88,9 +85,8 @@ internal class ResultPresenter : INotifyable<MessageTypes.CultureChange>
         if (obj == null)
             return;
 
-        if (TryRender(obj, angleMode, out var renderable))
+        if (TryRender(obj, angleMode, _console))
         {
-            _console.Write(renderable);
         }
         else if (TryFormat(obj, angleMode, out var formatted))
         {

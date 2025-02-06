@@ -3,34 +3,38 @@
 // This code is licensed under MIT license (see LICENSE for details)
 // --------------------------------------------------------------------------
 
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 using CliCalc.Functions;
 using CliCalc.Interfaces;
 
 using Spectre.Console;
-using Spectre.Console.Rendering;
 
 namespace CliCalc.Engine.Renderers;
 
 internal sealed class BinaryRenderer : IObjectRenderer
 {
-    public bool TryRender(object value, CultureInfo culture, AngleMode angleMode, [NotNullWhen(true)] out IRenderable? renderable)
+    public bool TryRender(object value,
+                          CultureInfo culture,
+                          AngleMode angleMode,
+                          IAnsiConsole console)
     {
         if (value is not Binary binary)
         {
-            renderable = null;
             return false;
         }
 
         if (binary.Count <= 8)
-            return RenderNumberInfo(binary, out renderable);
+        {
+            console.Write(RenderNumberInfo(binary));
+            return true;
+        }
 
-        return RenderHexDump(binary, out renderable);
+        console.Write(RenderHexDump(binary));
+        return true;
     }
 
-    private static bool RenderNumberInfo(Binary binary, out IRenderable? renderable)
+    private static Tree RenderNumberInfo(Binary binary)
     {
         static string GetFloatValue(Binary binary)
         {
@@ -95,11 +99,10 @@ internal sealed class BinaryRenderer : IObjectRenderer
             tree.AddNode(new Text($"Float: {asFloat}"));
         }
 
-        renderable = tree;
-        return true;
+        return tree;
     }
 
-    private static bool RenderHexDump(Binary binary, out IRenderable? renderable)
+    private static Table RenderHexDump(Binary binary)
     {
         var table = new Table();
         table.AddColumns("Offset", "", "Text");
@@ -113,7 +116,6 @@ internal sealed class BinaryRenderer : IObjectRenderer
             table.AddRow(offsetStr, hex, text);
             offset += row.Length;
         }
-        renderable = table;
-        return true;
+        return table;
     }
 }

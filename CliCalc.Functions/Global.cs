@@ -8,6 +8,9 @@ using System.Numerics;
 
 using CliCalc.Functions.Internals;
 
+using OxyPlot;
+using OxyPlot.Series;
+
 namespace CliCalc.Functions;
 
 /// <summary>
@@ -850,4 +853,65 @@ public sealed class Global
     /// <returns>Approximation of the finite integral in the given interval.</returns>
     public double Integrate(Func<double, double> f, double begin, double end)
         => MathNet.Numerics.Integrate.OnClosedInterval(f, begin, end, 1e-6);
+
+    /// <summary>
+    /// Create a new plot
+    /// </summary>
+    /// <returns>A plot data that's printable</returns>
+    public PlotData CreatePlot()
+        => new PlotData();
+
+    /// <summary>
+    /// Set Y axis title
+    /// </summary>
+    /// <param name="plot">Plot data that's Y axis title to set</param>
+    /// <param name="title">Y axis title</param>
+    public void SetYAxis(PlotData plot, string title)
+    {
+        plot.Model.DefaultYAxis.Title = title;
+    }
+
+    /// <summary>
+    /// Set X axis title
+    /// </summary>
+    /// <param name="plot">Plot data that's X axis title to set</param>
+    /// <param name="title">Y axis title</param>
+    public void SetXAxis(PlotData plot, string title)
+    {
+        plot.Model.DefaultXAxis.Title = title;
+    }
+
+    /// <summary>
+    /// Set plot title
+    /// </summary>
+    /// <param name="plot">Plot data that's title to set</param>
+    /// <param name="title">plot title</param>
+    public void SetTitle(PlotData plot, string title)
+    {
+        plot.Model.Title = title;
+    }
+
+    /// <summary>
+    /// Add a function series
+    /// </summary>
+    /// <param name="plot">Plot data to add series</param>
+    /// <param name="function">Function to plot</param>
+    /// <param name="title">Function title</param>
+    /// <param name="from">start value</param>
+    /// <param name="to">End value</param>
+    /// <param name="step">Stepping value</param>
+    public PlotData PlotSeries(PlotData plot, Func<double, double> function, string title, double from, double to, double? step = null)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(to, from);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(from, to);
+
+        if (!step.HasValue)
+        {
+            step = (to - from) / 2048;
+        }
+
+        plot.Model.Series.Add(new FunctionSeries(function, from, to, step.Value, title));
+
+        return plot;
+    }
 }

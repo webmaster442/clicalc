@@ -3,38 +3,34 @@
 // This code is licensed under MIT license (see LICENSE for details)
 // --------------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 using CliCalc.Functions;
 using CliCalc.Interfaces;
 
 using Spectre.Console;
+using Spectre.Console.Rendering;
 
 namespace CliCalc.Engine.Renderers;
 
 internal sealed class BinaryRenderer : IObjectRenderer
 {
-    public bool TryRender(object value,
-                          CultureInfo culture,
-                          AngleMode angleMode,
-                          IAnsiConsole console)
+    public bool TryRender(object value, CultureInfo culture, AngleMode angleMode, [NotNullWhen(true)] out IRenderable? renderable)
     {
         if (value is not Binary binary)
         {
+            renderable = null;
             return false;
         }
 
         if (binary.Count <= 8)
-        {
-            console.Write(RenderNumberInfo(binary));
-            return true;
-        }
+            return RenderNumberInfo(binary, out renderable);
 
-        console.Write(RenderHexDump(binary));
-        return true;
+        return RenderHexDump(binary, out renderable);
     }
 
-    private static Tree RenderNumberInfo(Binary binary)
+    private static bool RenderNumberInfo(Binary binary, out IRenderable? renderable)
     {
         static string GetFloatValue(Binary binary)
         {
@@ -76,7 +72,7 @@ internal sealed class BinaryRenderer : IObjectRenderer
         string asFloat = GetFloatValue(binary);
 
         Table table = new Table();
-        for (int i= binary.Count -1; i>= 0; i--)
+        for (int i = binary.Count - 1; i >= 0; i--)
         {
             table.AddColumn($"Byte {i}");
         }
@@ -99,10 +95,11 @@ internal sealed class BinaryRenderer : IObjectRenderer
             tree.AddNode(new Text($"Float: {asFloat}"));
         }
 
-        return tree;
+        renderable = tree;
+        return true;
     }
 
-    private static Table RenderHexDump(Binary binary)
+    private static bool RenderHexDump(Binary binary, out IRenderable? renderable)
     {
         var table = new Table();
         table.AddColumns("Offset", "", "Text");
@@ -116,6 +113,7 @@ internal sealed class BinaryRenderer : IObjectRenderer
             table.AddRow(offsetStr, hex, text);
             offset += row.Length;
         }
-        return table;
+        renderable = table;
+        return true;
     }
 }

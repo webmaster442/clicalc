@@ -42,11 +42,9 @@
 
   <ItemGroup>
     <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
-    <PackageReference Include="OxyPlot.ImageSharp" Version="2.2.0" />
     <PackageReference Include="PrettyPrompt" Version="4.1.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.12.0" />
     <PackageReference Include="SixLabors.Fonts" Version="2.1.2" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.5" />
     <PackageReference Include="Spectre.Console" Version="0.49.1" />
     <PackageReference Include="Spectre.Console.Analyzer" Version="1.0.0">
@@ -55,6 +53,7 @@
     </PackageReference>
     <PackageReference Include="Spectre.Console.Cli" Version="0.49.1" />
     <PackageReference Include="Webmaster442.WindowsTerminal" Version="2.0.0" />
+    <PackageReference Include="Webmaster442.WindowsTerminal.Sixel" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
